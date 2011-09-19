@@ -1,4 +1,7 @@
 - title @document.title_fmd
 
+- @document.terms.each do |term|
+  %li= term
+
 #text
   = @document.text
