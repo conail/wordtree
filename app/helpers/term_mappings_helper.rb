@@ -1,0 +1,2 @@
+module TermMappingsHelper
+end

@@ -1,0 +1,63 @@
+body
+  *
+    font: normal 1em $f1
+    margin: 0
+    padding: 0
+  background: $c1
+  border-top: 0.5em solid $c2
+  font-size: 0.8em
+  margin: 0
+
+header, footer 
+  display: block
+  overflow: auto
+header 
+  h1 
+    color: $c2
+    float: left
+    font-size: 2em
+    font-weight: 700
+    margin: 0 0 0.5em 0
+    span 
+      color: $c1 
+      text-shadow: 0 0 3px lighten($c2, 50)
+  form#search 
+    float: right
+    margin: 1em
+    input 
+      border: 1px solid #CCC
+      padding: 2px
+footer 
+  border-top: 1px solid #999
+  text-align: right
+  padding: 1em
+
+nav#primary
+  background-color: $c2
+  border: 1px solid $c1
+  clear: both
+  overflow: auto
+  margin: 0 0 1em 0
+  @include shadow
+  a
+    border-right: 1px solid $c1
+    color: $c1
+    float: left
+    font-weight: 400
+    display: block
+    letter-spacing: 0.2em
+    text-decoration: none
+    padding: 0.5em 1em
+    text-transform: uppercase
+    text-shadow: 0 1px 0 #000
+    &:hover
+      background-color: $subtlebg
+      color: $subtlefg
+
+#site 
+  padding: 1em
+
+#main h1 
+  color: $c2
+  font: normal 1.4em $f1
+  margin: 0 0 1em 0

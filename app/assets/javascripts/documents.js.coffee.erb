@@ -1,0 +1,28 @@
+$(document).ready ->
+  template = kendo.template $('#template').html
+  dataSource = new kendo.data.DataSource
+    type: 'odata'
+    serverPaging: true
+    serverSorting: true
+    pageSize: 10
+    transport: 
+      read: 'http://odata.netflix.com/Catalog/Titles'
+    change: ->
+      $("#page").attr 'max', this.totalPages
+      $("#movies").html kendo.render(template, this.view)
+  dataSource.read
+  $('#apply').live 'click', ->
+    page = parseInt $("#page").val, 10
+    total = dataSource.totalPages
+    if isNaN page or page < 1 or page > total
+      alert kendo.format("Page must be a number between 1 and {0}", total)
+      return
+    dataSource.query
+      page: page
+      pageSize: 10
+      sort:
+        field: $('#order').val
+        dir: $('#dir').val
+  $('#order').kendoDropDownList
+  $('#dir').kendoDropDownList
+

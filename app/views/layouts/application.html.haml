@@ -1,0 +1,21 @@
+!!! 5
+%html
+  %head
+    <link href="http://fonts.googleapis.com/css?family=Cabin:400,500,600,700" rel="stylesheet" />
+    = stylesheet_link_tag 'application'
+    = javascript_include_tag 'application'
+    %title= "The Word Tree | #{yield :title}"
+  %body{:id => "#{params[:controller]}_#{params[:action]}".parameterize}
+    #site
+      %header
+        %h1 TheWordTree<span>.net</span>
+      %nav#primary
+        = link_to 'Documents', documents_url
+        = link_to 'Genres', documents_url
+        = link_to 'Disciplines', documents_url
+        = link_to 'Keywords', documents_url
+      #main{:role => :main}
+        %h1= yield :title
+        = yield
+      %footer
+        %p.copyright= raw "Copyright &copy; #{Time.now.year}.  All Rights Reserved."

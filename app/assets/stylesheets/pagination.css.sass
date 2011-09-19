@@ -1,0 +1,36 @@
+nav.pagination
+  margin: 1em 0 0 0
+  background: #333
+  overflow: auto
+  text-transform: uppercase
+  .page 
+    background: $c2
+    &:hover
+      background-color: $subtlebg
+      color: $subtlefg
+  span 
+    margin: 0 1px 0 0
+    color: #fff
+    float: left
+    font-weight: 400
+    padding: 0.5em 1em
+    text-align: center
+    a
+      color: inherit
+      font-weight: 400
+      text-decoration: none
+  .prev, .first, .next, .last
+    background: #666
+    text-shadow: 0 1px 0 #000
+    &:hover 
+      background-color: $subtlebg
+      color: $subtlefg
+    &:active 
+      background-color: $actionbg
+  .next, .last 
+    float: right
+  .gap
+    display: none
+  .current
+    background-color: $activebg
+    color: $activefg

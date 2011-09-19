@@ -1,0 +1,24 @@
+//= require_self
+
+$c1: #FFF;
+$c2: #222;
+$menubg: #222;
+$c3: #0C3;
+$actionbg: #FC0;
+$actionfg: #000;
+$activebg: #555;
+$activefg: #FFF;
+$subtlebg: #FFE;
+$subtlefg: #111;
+$f1: Cabin, Arial, sans-serif;
+
+@mixin shadow($x: 0, $y: 0, $blur: 1em, $color: #AAA) {
+  -webkit-box-shadow: $x $y $blur $color;
+  -moz-box-shadow: $x $y $blur $color;
+  box-shadow: $x $y $blur $color;
+}
+
+@import "layout.sass";  
+@import "form.css.sass"; 
+@import "table.css.sass"; 
+@import "pagination.css.sass"; 

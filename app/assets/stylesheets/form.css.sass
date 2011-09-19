@@ -1,0 +1,39 @@
+form
+  padding: 1em
+  @include shadow
+  fieldset 
+    border: 0
+    margin: 0
+    padding: 0
+    li
+      float: left
+      list-style: none
+      margin: 0 1em 1em 0
+      label 
+        color: $c2
+        display: block
+        font-weight: 400
+        margin: 0 0 1em 0
+      input, select
+        background: $c1
+        box-shadow: inset 0 0 0.5em $c2
+        border: 1px solid #FFF
+        border-radius: 3px
+        color: $c2
+        padding: 0.5em
+        min-width: 20em
+      select option 
+        border-bottom: 1px solid #FFF
+        padding: 0.5em
+        &:nth-child(2n) 
+          background: rgba(0,0,0,0.1)
+  .buttons  
+    li 
+      float: right 
+      input[type=submit]
+        background-color: $actionbg
+        color: $actionfg
+        font-weight: 700
+        letter-spacing: 0.1em
+        min-width: 6em
+        text-transform: uppercase

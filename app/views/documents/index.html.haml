@@ -1,0 +1,28 @@
+- title 'Search'
+
+= semantic_form_for @document do |f|
+  = f.inputs do
+    %li 
+      = label_tag :q, 'Keyword'
+      = search_field_tag :keyword
+    = f.input :genres, :collection => Genre.order(:name)
+    = f.input :disciplines, :collection => Discipline.order(:name)
+    %li
+      = label_tag :q, 'Level'
+      %select
+        %option 1
+        
+  = f.buttons do
+    = f.commit_button 'Search'
+
+= paginate @documents, :remote => true
+
+%table
+  %thead
+    %tr
+      %th{:width => 40} Level 
+      %th{:width => 380} Genre
+      %th{:width => 200} Discipline
+      %th= sortable :title 
+  = render @documents
+

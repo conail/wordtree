@@ -1,0 +1,2 @@
+class TermMappingsController < ApplicationController
+end

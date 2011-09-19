@@ -1,0 +1,26 @@
+table 
+  border: 1px solid #CCC
+  border-collapse: collapse
+  width: 100%
+  @include shadow
+  thead tr th 
+    background: $c2
+    color: $c1
+    font-weight: 400
+    letter-spacing: 0.1em
+    padding: 0.5em
+    text-align: left
+    text-transform: uppercase
+    a
+      color: inherit
+      font-weight: bold
+      text-decoration: none
+  tbody tr
+    td 
+      border: 1px solid #CCC
+      padding: 0.5em
+    &:nth-child(2n)
+      background-color: rgba(0,0,0,0.1)
+    &:hover
+      background-color: $subtlebg
+      color: $subtlefg
