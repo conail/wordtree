@@ -3,6 +3,11 @@
 #wordtree
   %h2 Wordtree
   #canvas
+    - @document.terms.find_by_name('the').preterms.group(:name).each do |t|
+      %li= t.name
+      %ul
+        - t.preterms.select('name, COUNT(name) as count').group(:name).each do |t2|
+          %li{:style => "font-size:#{t2.count / 1.5}em"}= t2.name
 
 %article#text
   %h2 Transcript

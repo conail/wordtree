@@ -49,9 +49,11 @@ namespace :admin do
 
   desc "Connect"
   task(:connect => :environment) do
-    Keyword.all.each do |kw|
-      next if kw.prev.nil? or ! kw.next.nil?
-      kw.prev.update_attribute :next, kw
-    end 
+    Preterm.delete_all
+    TermMapping.all.each do |tm|
+      next if tm.pos == 1
+      tm.term.preterms << tm.document.terms.where('pos = ?', tm.pos - 1)
+      puts tm.document.id
+    end
   end
 end

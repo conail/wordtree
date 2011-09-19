@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110919081822) do
+ActiveRecord::Schema.define(:version => 20110919165533) do
 
   create_table "disciplines", :force => true do |t|
     t.string   "name"
@@ -55,6 +55,11 @@ ActiveRecord::Schema.define(:version => 20110919081822) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "preterms", :id => false, :force => true do |t|
+    t.integer "term_id"
+    t.integer "preterm_id"
   end
 
   create_table "term_mappings", :force => true do |t|
