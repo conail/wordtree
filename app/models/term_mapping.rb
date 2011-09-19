@@ -1,4 +1,4 @@
 class TermMapping < ActiveRecord::Base
-  has_many :terms
-  has_many :documents
+  belongs_to :term
+  belongs_to :document
 end

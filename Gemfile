@@ -10,7 +10,7 @@ gem 'nokogiri'
 gem 'inherited_resources'
 gem 'high_voltage'
 gem 'kaminari'
-gem 'compass'
+#gem 'compass'
 
 
 group :assets do

@@ -1,2 +1,4 @@
+alert window.location
+#= window.location+ "/page/<%= params[:page]%>"
 $('table').htmli '<%= escape_javascript render(@documents) %>'
 $('nav.pagination').html '<%= escape_javascript(paginate(@documents, :remote => true).to_s) %>'

@@ -33,23 +33,21 @@ footer
   padding: 1em
 
 nav#primary
-  background-color: $c2
-  border: 1px solid $c1
+  @include gradient
+  background-color: $c1
+  border-radius: 3px
   clear: both
   overflow: auto
   margin: 0 0 1em 0
   @include shadow
   a
     border-right: 1px solid $c1
-    color: $c1
+    color: $c2
     float: left
-    font-weight: 400
+    font-weight: 700
     display: block
-    letter-spacing: 0.2em
     text-decoration: none
     padding: 0.5em 1em
-    text-transform: uppercase
-    text-shadow: 0 1px 0 #000
     &:hover
       background-color: $subtlebg
       color: $subtlefg
@@ -57,7 +55,27 @@ nav#primary
 #site 
   padding: 1em
 
-#main h1 
-  color: $c2
-  font: normal 1.4em $f1
+#main 
+  overflow: auto
+  h1 
+    color: $c2
+    font: bold 1.4em $f1
+    margin: 0 0 1em 0
+  h2 
+    color: $c2
+    font: bold 1.2em $f1
+    margin: 0 0 1em 0
+  a
+    color: $subtlefg
+
+#wordtree
+  background-color: $subtlebg
+  display: block
+  width: 83em
+  border: 1px solid #ddb
   margin: 0 0 1em 0
+  padding: 1em
+  #canvas
+    border: 1px solid #ddb
+    background: #FFF
+    height: 20em 

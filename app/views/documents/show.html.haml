@@ -1,7 +1,25 @@
 - title @document.title_fmd
 
-- @document.terms.each do |term|
-  %li= term
+#wordtree
+  %h2 Wordtree
+  #canvas
 
-#text
-  = @document.text
+%article#text
+  %h2 Transcript
+  %section.transcript= @document.text
+
+%article#text
+  %h2 Term Frequencies
+  %section
+    %table
+      %thead
+        %tr
+          %th Term
+          %th{:colspan => 2} Frequency
+      %tbody
+        - @document.terms.group(:name).select('name, count(terms.id) AS cnt').order('cnt DESC').each do |t|
+          %tr
+            %td= t.name
+            %td= t.cnt 
+            %td
+              %span{:style => "width:#{t.cnt}px"}

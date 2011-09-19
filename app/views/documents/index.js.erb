@@ -1,2 +1,6 @@
 $('nav.pagination').replaceWith('<%= escape_javascript(paginate(@documents, :remote => true).to_s) %>')
 $('tbody').html('<%= escape_javascript((render @documents)) %>')
+
+<%- p = params[:page] %>
+document.title = "Documents: Page <%=p%>";
+window.history.pushState({"html":'',"pageTitle":document.title}, '', "/documents/page/<%=p%>");

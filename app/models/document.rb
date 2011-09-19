@@ -17,6 +17,6 @@ class Document < ActiveRecord::Base
   end
 
   def title_fmd
-    title.empty? ? 'N/A' : title
+    title.empty? ? 'N/A' : title[0, 200]
   end
 end
