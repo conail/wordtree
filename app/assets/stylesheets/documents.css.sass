@@ -28,7 +28,32 @@ body#documents_index
     width: 20em
   
   .panel
+    background-color: $subtlebg
+    border: 1px solid $subtlebg
+    color: $subtlefg
     float: left
-    width: 80em
-    table
+    margin: 0 1em 0 0
+  .panelwide
+    width: 70em
     
+#wordtree
+  background-color: $subtlebg
+  display: block
+  width: 93%
+  border: 1px solid #ddb
+  margin: 0 0 1em 0
+  padding: 1em
+  #canvas
+    border: 1px solid #ddb
+    background: #FFF
+    height: 200em
+    .node 
+      font-size: 12px
+      circle
+        fill: $a2 
+        stroke: $a3
+        stroke-width: 1.5px
+    .link
+      fill: none
+      stroke: #ccc 
+      stroke-width: 2px

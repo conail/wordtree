@@ -1,21 +1,21 @@
 - title 'Search'
 
-= semantic_form_for @document do |f|
-  = f.inputs do
-    %li 
-      = label_tag :q, 'Keyword'
-      = search_field_tag :keyword
-    = f.input :genres, :collection => Genre.group(:name).order(:name)
-    = f.input :disciplines, :collection => Discipline.group(:name).order(:name)
-    %li
-      = label_tag :q, 'Level'
-      %select
-        = options_for_select Document.select(:level).group(:level).map(&:level)
-        
-  = f.buttons do
-    = f.commit_button 'Search'
-
 .panel
+  = semantic_form_for @document do |f|
+    = f.inputs do
+      %li 
+        = label_tag :q, 'Keyword'
+        = search_field_tag :keyword
+      = f.input :genres, :collection => Genre.group(:name).order(:name)
+      = f.input :disciplines, :collection => Discipline.group(:name).order(:name)
+      %li
+        = label_tag :q, 'Level'
+        %select
+        = options_for_select Document.select(:level).group(:level).map(&:level)
+    = f.buttons do
+      = f.commit_button 'Search'
+
+.panel.panelwide
   = paginate @documents, :remote => true
 
   %table

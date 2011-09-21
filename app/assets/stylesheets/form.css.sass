@@ -1,6 +1,5 @@
 form
   padding: 1em
-  @include shadow
   fieldset 
     border: 0
     margin: 0
@@ -12,12 +11,12 @@ form
       label 
         color: $c2
         display: block
+        font-size: 1.2em
         font-weight: 700
         margin: 0 0 1em 0
       input, select
         background: $c1
         box-shadow: inset 0 0 0.5em $c2
-        border: 1px solid #FFF
         border-radius: 3px
         color: $c2
         padding: 0.5em
@@ -32,6 +31,7 @@ form
       float: right 
       input[type=submit]
         background-color: #900
+        border: 0
         color: #FFF
         font-weight: 700
         letter-spacing: 0.1em

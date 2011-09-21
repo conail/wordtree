@@ -3,8 +3,8 @@ body
     font: normal 1em $f1
     margin: 0
     padding: 0
-  background: $c1
-  border-top: 0.5em solid $c2
+  background: $c2
+  border-top: 0.5em solid $c1
   font-size: 0.8em
   margin: 0
 
@@ -13,13 +13,13 @@ header, footer
   overflow: auto
 header 
   h1 
-    color: $c2
+    color: $c1
     float: left
     font-size: 2em
     font-weight: 700
     margin: 0 0 0.5em 0
     span 
-      color: $c1 
+      color: $c2 
       text-shadow: 0 0 3px lighten($c2, 50)
   form#search 
     float: right
@@ -34,19 +34,21 @@ footer
 
 nav#primary
   @include gradient
-  background-color: $c1
+  background-color: $c2
   border-radius: 3px
   clear: both
+  display: block
   overflow: auto
   margin: 0 0 1em 0
   @include shadow
   a
-    border-right: 1px solid $c1
-    color: $c2
+    border-right: 1px solid $c2
+    color: $c1
     float: left
     font-weight: 700
     display: block
     text-decoration: none
+    text-transform: uppercase
     padding: 0.5em 1em
     &:hover
       background-color: $subtlebg
@@ -58,26 +60,14 @@ nav#primary
 #main 
   overflow: auto
   h1 
-    color: $c2
+    color: $c1
     font: bold 1.4em $f1
     margin: 0 0 1em 0
   h2 
-    color: $c2
+    color: $c1
     font: bold 1.2em $f1
     margin: 0 0 1em 0
   a
     color: $subtlefg
   ul
     margin: 0 0 0 2em
-
-#wordtree
-  background-color: $subtlebg
-  display: block
-  width: 83em
-  border: 1px solid #ddb
-  margin: 0 0 1em 0
-  padding: 1em
-  #canvas
-    border: 1px solid #ddb
-    background: #FFF
-    height: 20em 

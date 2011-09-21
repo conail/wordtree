@@ -10,13 +10,11 @@ class Document < ActiveRecord::Base
   end
 
   def tokenize
-    words = text.split(' ')
-    words.each do |word|
-      Word.create(:term => word)
-    end
+    text.split(' ').each{|w| Word.create_by_term word}
   end
 
   def title_fmd
-    title.empty? ? 'N/A' : title[0, 200]
+    'N/A' and return if title.nil? or title.empty?
+    title[0, 200]
   end
 end
