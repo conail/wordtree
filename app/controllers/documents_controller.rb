@@ -6,7 +6,11 @@ class DocumentsController < InheritedResources::Base
 
   def show
     @document = Document.find params[:id]
-    @term = params[:q] || @document.terms.group('terms.id').order('COUNT(terms.id) DESC').limit(1).first.name
-    respond_to {|f| f.html; f.json}
+    @term = Term.find_by_name(params[:q])
+    @term ||= @document.terms.group('terms.id').order('COUNT(terms.id) DESC').limit(1).first
+    respond_to do |f| 
+      f.html
+      f.json { render :json => @term.preterm_tree(params[:depth])}
+    end
   end
 end

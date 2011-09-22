@@ -5,4 +5,14 @@ class Term < ActiveRecord::Base
     :class_name => 'Term',
     :association_foreign_key => "preterm_id",
     :join_table => "preterms"
+  has_and_belongs_to_many :postterms,
+    :class_name => 'Term',
+    :association_foreign_key => "postterm_id",
+    :join_table => "postterms"
+
+  def preterm_tree(level = 3)
+    level = level.to_i
+    return {:name => name} if level == 1
+    { :name => name, :children => preterms.select('id, name, COUNT(id) AS cnt').group(:id).map {|x| x.preterm_tree(level - 1)}}
+  end
 end
