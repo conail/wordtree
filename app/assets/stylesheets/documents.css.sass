@@ -21,11 +21,11 @@ table td span
   background-color: #069 
   border: 1px solid #000
 
-body#documents_index
+body#documents_index,
+body#documents_create
   form
     float: left
     margin: 0 1em 1em 0
-    width: 20em
   
   .panel
     background-color: $subtlebg
@@ -33,10 +33,11 @@ body#documents_index
     color: $subtlefg
     float: left
     margin: 0 1em 0 0
+    width: 23%
     h2
       color: #000
   .panelwide
-    width: 70em
+    width: 72%
     
 #wordtree
   background-color: $subtlebg
@@ -49,6 +50,10 @@ body#documents_index
     border: 1px solid #ddb
     background: #FFF
     height: 200em
+    position: relative
+    svg
+      position: absolute
+      top: 0
     .node 
       font-size: 12px
       circle

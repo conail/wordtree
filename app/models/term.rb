@@ -15,4 +15,11 @@ class Term < ActiveRecord::Base
     return {:name => name} if level == 1
     { :name => name, :children => preterms.select('id, name, COUNT(id) AS cnt').group(:id).map {|x| x.preterm_tree(level - 1)}}
   end
+
+  def postterm_tree(level = 3, i = 1)
+    level = level.to_i
+    i = i.to_i
+    return {:name => name} if level == i
+    { :name => name, :children => postterms.select('id, name, COUNT(id) AS cnt').group(:id).map {|x| x.postterm_tree(level, i + 1)}}
+  end
 end

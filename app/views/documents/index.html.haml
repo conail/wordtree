@@ -11,7 +11,7 @@
       %li
         = label_tag :q, 'Level'
         %select
-        = options_for_select Document.select(:level).group(:level).map(&:level)
+          = options_for_select Document.select(:level).group(:level).map(&:level)
     = f.buttons do
       = f.commit_button 'Search'
 
@@ -22,7 +22,7 @@
     %thead
       %tr
         %th{:width => 40} Level 
-        %th{:width => 380} Genre
+        %th{:width => 140} Genre
         %th{:width => 200} Discipline
         %th= sortable :title 
     = render @documents
