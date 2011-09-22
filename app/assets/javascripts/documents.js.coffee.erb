@@ -2,24 +2,13 @@ $(document).ready ->
   c = $("#wordtree #canvas")
   h = c.height()
   w = c.width()
-  vis = d3.select("#wordtree #canvas").append("svg:svg").attr("width", w).attr("height", h).append("svg:g")
-  d3.json "#{location.pathname}.json#{location.search}&t=pre", (json) ->
-    pretree  = d3.layout.tree().size([h, w])
-    dg1 = d3.svg.diagonal().projection((d) -> [w/2-d.y/2, d.x])
-    nodes = pretree.nodes(json)  
-    link = vis.selectAll("path.link").data(pretree.links(nodes)).enter().append("svg:path").attr("class", "link").attr("d", dg1)
-    node = vis.selectAll("g.node").data(nodes).enter().append("svg:g").attr("class", "node").attr("transform", (d) -> "translate(#{w/2-d.y/2},  #{d.x})")
-    node.append("svg:circle").attr("r", 3)
-    node.append("svg:text").attr("dx", 8).attr("dy", 3).text((d) -> d.name)
   vis2 = d3.select("#wordtree #canvas").append("svg:svg").attr("width", w).attr("height", h).append("svg:g")
   d3.json "#{location.pathname}.json#{location.search}&t=post", (j) ->
     posttree  = d3.layout.tree().size([h, w-120])
-    dg2 = d3.svg.diagonal().projection((d) -> [w/2+d.y/2, d.x])
+    dg2 = d3.svg.diagonal().projection((d) -> [d.y, d.x])
     nodes2 = posttree.nodes(j)  
     link2 = vis2.selectAll("path.link").data(posttree.links(nodes2)).enter().append("svg:path").attr("class", "link").attr("d", dg2)
-    node2 = vis2.selectAll("g.node").data(nodes2).enter().append("svg:g").attr("class", "node").attr("transform", (d) -> "translate(#{w/2+d.y/2},  #{d.x})")
-    node2.append("svg:circle").attr("r", 3)
-    node2.append("svg:text").attr("dx", 8).attr("dy", 3).text((d) -> d.name).on('click', click)
+    node2 = vis2.selectAll("g.node").data(nodes2).enter().append("svg:g").attr("class", "node").attr("transform", (d) -> "translate(#{d.y},  #{d.x})")
+    node2.append("svg:text").attr("dx", 8).attr("dy", 3).text((d) -> "#{d.name)}"
 
-click ->
-  alert 34
+  $("select[name=depth]").val(3)

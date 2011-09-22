@@ -26,7 +26,6 @@ body#documents_create
   form
     float: left
     margin: 0 1em 1em 0
-  
   .panel
     background-color: $subtlebg
     border: 1px solid $subtlebg
@@ -40,6 +39,35 @@ body#documents_create
     width: 72%
     
 #wordtree
+  background-color: #fff !important
+  button
+    margin: 0 0 0 1em
+  nav#links
+    float: right
+    a
+      display: block
+      background: #CCC
+      float: left
+      margin: 0 0 0 1em
+      padding: 0.5em
+      border: 1px solid #666
+      border-radius: 3px
+      text-decoration: none
+      &:hover
+        @include shadow
+  form
+    overflow: auto
+    label
+      float: left
+      margin: 0 1em 1em 0
+      span
+        font-weight: bold
+        display: block
+        margin: 0 0 0.25em 0
+    input[type=submit]
+      margin: 0.25em 0 0 0
+      padding: 0.5em
+    
   background-color: $subtlebg
   display: block
   width: 93%
@@ -48,9 +76,10 @@ body#documents_create
   padding: 1em
   #canvas
     border: 1px solid #ddb
-    background: #FFF
-    height: 200em
+    background: #FFE
+    height: 40em
     position: relative
+    padding: 0 0 0 2em
     svg
       position: absolute
       top: 0

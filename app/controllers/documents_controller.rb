@@ -1,5 +1,6 @@
 class DocumentsController < InheritedResources::Base
   def index
+    redirect_to :action => :show, :id => 1
     @documents = Document.order(:title).page(params[:page]).per(params[:per_page] || 30)
     @document = Document.new
   end
@@ -12,6 +13,9 @@ class DocumentsController < InheritedResources::Base
   end
 
   def show
+    #redirect_to(:action => :show, params.merge(:q => 'the')) if params[:q].nil?
+    # threshold 
+    # limit to the end of a sentence 
     @document = Document.find params[:id]
     @term = Term.find_by_name(params[:q])
     @term ||= @document.terms.group('terms.id').order('COUNT(terms.id) DESC').limit(1).first

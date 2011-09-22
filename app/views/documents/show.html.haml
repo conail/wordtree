@@ -7,9 +7,22 @@
       %span Keyword
       = text_field_tag :q
     %label
-      %span Depth
-      = select_tag :depth, options_for_select([1,2,3,4])
-    = submit_tag 'Go'
+      %span Branches
+      = select_tag :depth, options_for_select([1,2,3,4,5,6], 2)
+    %label
+      %span Threshold
+      = select_tag :threshold, options_for_select([1,2,3,4,5,6], 2)
+    %label
+      %span Orientation
+      %input{:type => :radio, :name => :dir, :value => :pre} Left
+      %input{:type => :radio, :name => :dir, :value => :post, :selected => :selected} Right
+    %label
+      %span Order
+      %input{:type => :radio, :name => :dir, :value => :pre} Alphabetical
+      %input{:type => :radio, :name => :dir, :value => :post} Frequency
+    %nav#links
+      = link_to 'Previous', document_url(@document.id - 1) unless @document.id == 1
+      = link_to 'Next', document_url(@document.id + 1)
   #canvas
 
 %article#text

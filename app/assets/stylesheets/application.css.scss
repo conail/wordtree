@@ -1,7 +1,7 @@
 //= require_self
 
 $c1: #FFF;
-$c2: #222;
+$c2: #444;
 $menubg: #222;
 $c3: #0C3;
 $actionbg: #FC0;
@@ -17,7 +17,7 @@ $a4: #F0E99A;
 $a5: #362E29;
 $f1: Cabin, Arial, sans-serif;
 
-@mixin shadow($x: 0, $y: 0, $blur: 0.5em, $color: #CCC) {
+@mixin shadow($x: 0, $y: 0, $blur: 0.25em, $color: #CCC) {
   -webkit-box-shadow: $x $y $blur $color;
   -moz-box-shadow: $x $y $blur $color;
   box-shadow: $x $y $blur $color;
