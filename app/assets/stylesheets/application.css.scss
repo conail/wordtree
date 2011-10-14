@@ -15,7 +15,7 @@ $a2: #472E29;
 $a3: #948658;
 $a4: #F0E99A;
 $a5: #362E29;
-$f1: Cabin, Arial, sans-serif;
+$f1: Arial, sans-serif;
 
 @mixin shadow($x: 0, $y: 0, $blur: 0.25em, $color: #CCC) {
   -webkit-box-shadow: $x $y $blur $color;
