@@ -2,13 +2,15 @@ $(document).ready ->
   c = $("#wordtree #canvas")
   h = c.height()
   w = c.width()
-  vis2 = d3.select("#wordtree #canvas").append("svg:svg").attr("width", w).attr("height", h).append("svg:g")
+  vis = d3.select("#wordtree #canvas").append("svg:svg").attr("width", w).attr("height", h).append("svg:g")
   d3.json "#{location.pathname}.json#{location.search}&t=post", (j) ->
     posttree  = d3.layout.tree().size([h, w-120])
-    dg2 = d3.svg.diagonal().projection((d) -> [d.y, d.x])
-    nodes2 = posttree.nodes(j)  
-    link2 = vis2.selectAll("path.link").data(posttree.links(nodes2)).enter().append("svg:path").attr("class", "link").attr("d", dg2)
-    node2 = vis2.selectAll("g.node").data(nodes2).enter().append("svg:g").attr("class", "node").attr("transform", (d) -> "translate(#{d.y},  #{d.x})")
-    node2.append("svg:text").attr("dx", 8).attr("dy", 3).text((d) -> "#{d.name)}"
+    dg = d3.svg.diagonal().projection((d) -> [d.y, d.x])
+    nodes = posttree.nodes(j)  
+    link = vis.selectAll("path.link").data(posttree.links(nodes)).enter().append("svg:path").attr("class", "link").attr("d", dg)
+    node = vis.selectAll("g.node").data(nodes).enter().append("svg:g").attr("class", "node").attr("transform", (d) -> "translate(#{d.y},  #{d.x})")
+    node.append("svg:text").attr("dx", 8).attr("dy", 3).text((d) -> "#{d.name)}"
 
   $("select[name=depth]").val(3)
+  $("select[name=depth]").onchange (e) -> 
+    window.location.reload()

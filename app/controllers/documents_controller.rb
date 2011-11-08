@@ -24,9 +24,9 @@ class DocumentsController < InheritedResources::Base
       f.json do 
         if params[:t] == 'pre'
           render :json => @term.preterm_tree(params[:depth])
-	else
+        else
           render :json => @term.postterm_tree(params[:depth]) 
-	end
+      	end
       end
     end
   end
