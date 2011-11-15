@@ -9,7 +9,7 @@ $(document).ready ->
     nodes = posttree.nodes(j)  
     link = vis.selectAll("path.link").data(posttree.links(nodes)).enter().append("svg:path").attr("class", "link").attr("d", dg)
     node = vis.selectAll("g.node").data(nodes).enter().append("svg:g").attr("class", "node").attr("transform", (d) -> "translate(#{d.y},  #{d.x})")
-    node.append("svg:text").attr("dx", 8).attr("dy", 3).text((d) -> "#{d.name)}"
+    node.append("svg:text").attr("dx", 8).attr("dy", 3).text((d) -> "#{d.name}")
 
   $("select[name=depth]").val(3)
   $("select[name=depth]").onchange (e) -> 

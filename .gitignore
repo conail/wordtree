@@ -1,3 +1,6 @@
+*.log
+*.lck
+*.lock
 .bundle
 gems/
 db/*.sqlite3

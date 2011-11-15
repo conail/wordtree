@@ -1,6 +1,4 @@
-# Be sure to restart your server when you modify this file.
-
-PrototypeThewordtreeNet::Application.config.session_store :cookie_store, key: '_prototype.thewordtree.net_session'
+PrototypeThewordtreeNet::Application.config.session_store :cookie_store, :key => 'wordtree'
 
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information
