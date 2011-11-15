@@ -1,9 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
-
-one:
-  genre_id: 1
-  document_id: 1
-
-two:
-  genre_id: 1
-  document_id: 1

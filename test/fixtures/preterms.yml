@@ -1,9 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
-
-one:
-  term_id: 1
-  preterm_id: 1
-
-two:
-  term_id: 1
-  preterm_id: 1
