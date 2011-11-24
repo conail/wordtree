@@ -1,5 +1,4 @@
 %tr
   %td
-    %span{:class => "level#{document.level}"}= document.level
-  %td= document.genres.map(&:name).to_sentence
-  %td= link_to document.title_fmd, document
+  %td= document.words
+  %td= link_to document.title, document

@@ -33,7 +33,7 @@ $f1: Arial, sans-serif;
   background: linear-gradient(top, rgba(100,100,100,0.65) 0%,rgba(0,0,0,0) 100%); /* W3C */
 }
 
-@import "layout.sass";  
+@import "layout.css.sass";  
 @import "form.css.sass"; 
 @import "table.css.sass"; 
 @import "pagination.css.sass"; 

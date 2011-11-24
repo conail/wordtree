@@ -1,9 +1,23 @@
-class Document < ActiveRecord::Base
-  has_many :genre_memberships
-  has_many :genres, :through => :genre_memberships
-  has_and_belongs_to_many :disciplines
-  has_many :term_mappings
-  has_many :terms, :through => :term_mappings
+class Document < Neo4j::Model
+  property :title,      :type => String
+  property :student_id, :type => String
+  property :level,      :type => String
+  property :date,       :type => String
+  property :module,     :type => String
+  property :dgrade,     :type => String
+  property :dgroup,     :type => String
+  property :grade,      :type => String
+  property :words,      :type => String
+  property :sunits,     :type => String
+  property :punits,     :type => String
+  property :macrotype,  :type => String
+  property :code,       :type => String
+
+  index :title
+
+  has_n :genres
+  has_n :terms
+  has_n :disciplines 
 
   def self.search(q)
     q ? where('title LIKE ?', "%#{q}%") : scoped
@@ -16,5 +30,10 @@ class Document < ActiveRecord::Base
   def title_fmd
     'N/A' and return if title.nil? or title.empty?
     title[0, 200]
+  end
+
+  def text
+    doc = Nokogiri(File.open("data/CORPUS_UTF-8/#{code}.xml", 'rb').read)
+    doc.css('body').text
   end
 end

@@ -1,6 +1,7 @@
-class Genre < ActiveRecord::Base
-  has_many :genre_memberships
-  has_many :documents, :through => :genre_memberships
+class Genre < Neo4j::Model 
+  has_n :documents
+
+  index :name
 
   validates_uniqueness_of :name
 end

@@ -5,7 +5,7 @@
   = form_for document_url(@document), :method => :get do |f|
     %label
       %span Keyword
-      = text_field_tag :q
+      = text_field_tag :q, params[:q]
     %label
       %span Branches
       = select_tag :depth, options_for_select([1,2,3,4,5,6], 2)
@@ -20,14 +20,13 @@
       %span Order
       %input{:type => :radio, :name => :dir, :value => :pre} Alphabetical
       %input{:type => :radio, :name => :dir, :value => :post} Frequency
-    %nav#links
-      = link_to 'Previous', document_url(@document.id - 1) unless @document.id == 1
-      = link_to 'Next', document_url(@document.id + 1)
   #canvas
+
 
 %article#text
   %h2 Transcript
-  %section.transcript= @document.text
+  %section.transcript
+    = raw @document.text
 
 %article#text
   %h2 Term Frequencies
@@ -38,9 +37,7 @@
           %th Term
           %th{:colspan => 2} Frequency
       %tbody
-        - @document.terms.group(:name).select('name, count(terms.id) AS cnt').order('cnt DESC').each do |t|
-          %tr
-            %td= t.name
-            %td= t.cnt 
-            %td
-              %span{:style => "width:#{t.cnt}px"}
+        %tr
+          %td= #t.name
+          %td= #t.cnt 
+          %td

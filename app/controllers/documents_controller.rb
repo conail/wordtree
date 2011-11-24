@@ -1,9 +1,8 @@
 class DocumentsController < InheritedResources::Base
   def index
-    redirect_to :action => :show, :id => 1
-    @documents = Document.order(:title).page(params[:page]).per(params[:per_page] || 30)
-    @document = Document.new
-  end
+    @documents = Document.find(:all, :sort => {:title => :desc}).paginate(:page => params[:page], :per_page => 40)
+    @document = nil
+  end 
 
   def create
     @documents = Document.order(:title).page(params[:page]).per(params[:per_page] || 30)
@@ -13,20 +12,13 @@ class DocumentsController < InheritedResources::Base
   end
 
   def show
-    #redirect_to(:action => :show, params.merge(:q => 'the')) if params[:q].nil?
-    # threshold 
-    # limit to the end of a sentence 
-    @document = Document.find params[:id]
-    @term = Term.find_by_name(params[:q])
-    @term ||= @document.terms.group('terms.id').order('COUNT(terms.id) DESC').limit(1).first
+    @document = Document.find(params[:id])
+    params[:q] ||= @document.text.match(/^(\w+) /)[0].downcase # First word
+    @term = Term.find(:name => params[:q]) 
     respond_to do |f| 
       f.html
       f.json do 
-        if params[:t] == 'pre'
-          render :json => @term.preterm_tree(params[:depth])
-        else
-          render :json => @term.postterm_tree(params[:depth]) 
-      	end
+        render :json => @term.tree() #params[:depth])
       end
     end
   end

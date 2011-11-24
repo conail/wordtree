@@ -3,7 +3,7 @@ $(document).ready ->
   h = c.height()
   w = c.width()
   vis = d3.select("#wordtree #canvas").append("svg:svg").attr("width", w).attr("height", h).append("svg:g")
-  d3.json "#{location.pathname}.json#{location.search}&t=post", (j) ->
+  d3.json "#{location.pathname}.json#{location.search}", (j) ->
     posttree  = d3.layout.tree().size([h, w-120])
     dg = d3.svg.diagonal().projection((d) -> [d.y, d.x])
     nodes = posttree.nodes(j)  

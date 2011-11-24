@@ -24,12 +24,12 @@ GEM
       activesupport (= 3.1.1)
       arel (~> 2.2.1)
       tzinfo (~> 0.3.29)
-    activerecord-jdbc-adapter (1.2.0)
     activeresource (3.1.1)
       activemodel (= 3.1.1)
       activesupport (= 3.1.1)
     activesupport (3.1.1)
       multi_json (~> 1.0)
+    ansi (1.4.1)
     arel (2.2.1)
     bouncy-castle-java (1.5.0146.1)
     builder (3.0.0)
@@ -43,6 +43,7 @@ GEM
     erubis (2.7.0)
     execjs (1.2.9)
       multi_json (~> 1.0)
+    fastercsv (1.5.4)
     formtastic (2.0.2)
       rails (~> 3.0)
     haml (3.1.3)
@@ -53,8 +54,6 @@ GEM
     inherited_resources (1.3.0)
       has_scope (~> 0.5.0)
       responders (~> 0.6.0)
-    jdbc-mysql (5.1.13)
-    jdbc-sqlite3 (3.7.2)
     jquery-rails (1.0.17)
       railties (~> 3.0)
       thor (~> 0.14)
@@ -63,18 +62,19 @@ GEM
     jruby-rack (1.1.1)
     json (1.6.1)
     json (1.6.1-java)
-    kaminari (0.12.4)
-      rails (>= 3.0.0)
     mail (2.3.0)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.17.2)
     multi_json (1.0.3)
-    mysql2 (0.3.10)
-    neo4j (0.4.6)
-    nokogiri (1.5.0)
+    neo4j (1.2.6-java)
+      activemodel (>= 3.0.0)
+      orm_adapter (>= 0.0.3)
+      railties (>= 3.0.0)
+      will_paginate (= 3.0.pre4)
     nokogiri (1.5.0-java)
+    orm_adapter (0.0.5)
     polyglot (0.3.3)
     rack (1.3.5)
     rack-cache (1.1)
@@ -115,9 +115,6 @@ GEM
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sqlite3 (1.3.4)
-    sqlite3-ruby (1.3.3)
-      sqlite3 (>= 1.3.3)
     thor (0.14.6)
     tilt (1.3.3)
     treetop (1.4.10)
@@ -127,33 +124,33 @@ GEM
       jruby-rack (>= 1.0.9)
       trinidad_jars (>= 1.0.1)
     trinidad_jars (1.0.1)
+    turn (0.8.3)
+      ansi
     tzinfo (0.3.31)
     uglifier (1.0.4)
       execjs (>= 0.3.0)
       multi_json (>= 1.0.2)
+    will_paginate (3.0.pre4)
 
 PLATFORMS
   java
   ruby
 
 DEPENDENCIES
-  activerecord-jdbc-adapter
   coffee-rails (~> 3.1.0)
+  fastercsv
   formtastic
   haml
   high_voltage
   inherited_resources
-  jdbc-mysql
-  jdbc-sqlite3
   jquery-rails
   jruby-openssl
-  kaminari
-  mysql2
-  neo4j
+  neo4j (= 1.2.6)
   nokogiri
   rails (~> 3.1.0)
   sass
   sass-rails (~> 3.1.0)
-  sqlite3-ruby
   trinidad
+  turn
   uglifier
+  will_paginate (= 3.0.pre4)
