@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  term: MyString
+  next_term: MyString
+  document_id: 1
+
+two:
+  term: MyString
+  next_term: MyString
+  document_id: 1

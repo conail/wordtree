@@ -1,0 +1,106 @@
+* 
+  margin: 0
+  padding: 0
+  font: 1em DIN, Arial, sans-serif
+  text-transform: uppercase
+
+#site
+  margin: 0
+
+header, footer
+  background: #444
+  color: #FFF
+  padding: 0.5em 1em
+
+header
+  margin: 0 0 1em 0
+  overflow: auto
+  box-shadow: 0 0.5em 2em #CCC
+  h1
+    color: #FFF
+    font-size: 2em
+    font-weight: normal
+    float: left
+    text-shadow: 0 1px 0 #000
+  form
+    float: right
+    input, select
+      border: 1px solid #FE9
+      padding: 4px
+      background-color: #000
+      color: #FFF
+    label
+      font-weight: bold
+
+footer
+  text-align: right 
+  padding: 1em 1em 4em 1em
+  box-shadow: inset 0 0 2em #222 
+  color: #666
+
+#page
+  margin: 1em 
+  h2
+    font-size: 1.5em
+    margin: 0 0 0.5em 0
+  #toolbar
+    background: #CCC
+    border: 1px solid #999
+    padding: 0.5em
+    a
+      text-decoration: none
+      font-weight: bold
+    form
+      fieldset
+        border: 0
+        display: inline
+        input, select
+          padding: 0.25em
+      fieldset.options
+        float: right
+  #wordtree
+    background-color: #FAFAFA
+    box-shadow: inset 0 0 1em #777
+    height: 800px
+    width: 800px
+    path.link 
+      fill: none
+      stroke: #999
+      stroke-width: 0.5px
+    .node
+      text.label
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5)
+        &:hover
+          cursor: hand
+          stroke: #FC0
+      text.magnitude
+        font: 0.7em sans-serif
+        fill: #333
+        text-anchor: middle
+      circle 
+        fill: #DE9
+        opacity: 0.5
+      circle:hover 
+        fill: #FC0
+        opacity: 0.8
+
+nav.pagination
+  margin: 0 0 1em 0
+  background: #444
+  color: #FFF
+  overflow: auto
+  text-align: center
+  a
+    color: inherit
+    text-decoration: none
+    font-weight: bold
+  a, span
+    padding: 0.5em
+    border: 1px solid #222
+  .next, .last
+    float: right
+  .first, .prev
+    float: left
+  .current
+    background-color: #FC0
+    color: #000

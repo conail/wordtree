@@ -1,0 +1,15 @@
+= title 'Listing Documents'
+
+#toolbar
+  = link_to 'New Document', new_document_path 
+
+= paginate @documents
+
+%table
+  %thead
+    %tr
+      %th Title</th>
+  %tbody
+    - @documents.each do |document|
+      %tr
+        %td= link_to document.title, document 

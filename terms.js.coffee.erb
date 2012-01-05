@@ -1,0 +1,32 @@
+$(document).ready ->
+  c = $("#wordtree")
+  h = c.height()
+  w = c.width()
+
+  tree = d3.layout.tree().size(200, 200)
+
+  # Embed SVG element.
+  vis = d3.select("#wordtree").
+    append("svg:svg").
+    attr("width", w).
+    attr("height", h).
+    append("svg:g")
+  
+  # Switch axes.
+  link = diagonal = d3.svg.diagonal().
+    projection((d) -> [d.y, d.x])
+
+      
+  # Fetch the JSON tree for the current term.
+  d3.json "/terms.json?#{location.search.match(/search=\w+/)}", (json) ->
+    
+    # Initialize the cluster space, leaving a margin of 160 pixels on the right.
+    nodes = tree.nodes(json)
+    links = tree.links(nodes)
+
+    vis.selectAll("path.link").
+      data(links).
+      enter().
+        append("svg:path").
+        attr("class", "link")#.
+#        attr("d", link )

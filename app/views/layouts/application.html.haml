@@ -1,0 +1,17 @@
+!!! 5
+%html
+  %head
+    %title Wordtree
+    = favicon_link_tag '/favicon.ico'
+    = stylesheet_link_tag    'application'
+    = javascript_include_tag 'application' 
+    = csrf_meta_tags 
+  %body
+    #site
+      %header
+        %h1 wordtr.ee
+      #page
+        %h2= yield :title
+        = yield
+      %footer
+        %p= raw "Copyright #{Time.now.year} &copy; Conail Stewart.  All Rights Reserved."
