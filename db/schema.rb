@@ -11,6 +11,33 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 0) do
+ActiveRecord::Schema.define(:version => 20120105160741) do
+
+  create_table "documents", :force => true do |t|
+    t.string   "title"
+    t.string   "content"
+    t.string   "student_id"
+    t.string   "code"
+    t.string   "level"
+    t.string   "date"
+    t.string   "module"
+    t.string   "dgroup"
+    t.string   "grade"
+    t.integer  "words"
+    t.integer  "sunits"
+    t.integer  "punits"
+    t.string   "macrotype"
+    t.text     "xml"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "sentences", :force => true do |t|
+    t.integer  "document_id"
+    t.string   "text"
+    t.string   "clean"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end
