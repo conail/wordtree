@@ -1,4 +1,6 @@
 Wordtree::Application.routes.draw do
+  resources :trees
+
   resources :sentences
 
   resources :documents

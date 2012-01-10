@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120105160741) do
+ActiveRecord::Schema.define(:version => 20120109120852) do
 
   create_table "documents", :force => true do |t|
     t.string   "title"
@@ -34,8 +34,15 @@ ActiveRecord::Schema.define(:version => 20120105160741) do
 
   create_table "sentences", :force => true do |t|
     t.integer  "document_id"
-    t.string   "text"
-    t.string   "clean"
+    t.text     "text"
+    t.text     "clean"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "trees", :force => true do |t|
+    t.string   "name"
+    t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
