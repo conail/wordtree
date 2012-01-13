@@ -104,3 +104,96 @@ nav.pagination
   .current
     background-color: #FC0
     color: #000
+=======
+body
+  *
+    font: normal 1em $f1
+    margin: 0
+    padding: 0
+  background: $c2
+  border-top: 0.5em solid $c1
+  font-size: 0.8em
+  margin: 0
+
+header, footer 
+  display: block
+  overflow: auto
+header 
+  h1 
+    color: $c1
+    float: left
+    font-size: 2em
+    font-weight: 700
+    margin: 0 0 0.5em 0
+    span 
+      color: $c2 
+      text-shadow: 0 0 3px lighten($c2, 50)
+  form#search 
+    float: right
+    margin: 1em
+    input 
+      border: 1px solid #CCC
+      padding: 2px
+footer 
+  border-top: 1px solid #999
+  text-align: right
+  padding: 1em
+
+nav#primary
+  @include gradient
+  background-color: $c2
+  border-radius: 3px
+  clear: both
+  display: block
+  overflow: auto
+  margin: 0 0 1em 0
+  @include shadow
+  a
+    border-right: 1px solid $c2
+    color: $c1
+    float: left
+    font-weight: 700
+    display: block
+    text-decoration: none
+    text-transform: uppercase
+    padding: 0.5em 1em
+    &:hover
+      background-color: $subtlebg
+      color: $subtlefg
+
+#site 
+  padding: 1em
+
+#main 
+  overflow: auto
+  h1 
+    color: $c1
+    font: bold 1.4em $f1
+    margin: 0 0 1em 0
+  h2 
+    color: $c2
+    font: bold 1.2em $f1
+    margin: 0 0 1em 0
+  a
+    color: $subtlefg
+  ul
+    margin: 0 0 0 2em
+
+div.pagination
+  display: block
+  background: #333 !important
+  float: none
+  overflow: auto
+  em, span, a 
+    display: block
+    background: #222
+    font-weight: bold
+    color: #fff
+    float: left
+    padding: 0.5em 1em
+    margin: 0 1px 0 0
+  a
+    text-decoration: none
+    color: #fff !important
+    &:hover
+      background: #fc0
