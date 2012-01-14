@@ -1,27 +1,30 @@
 * 
   margin: 0
   padding: 0
-  font: 1em DIN, Arial, sans-serif
-  text-transform: uppercase
+  font: 1em Gotham, Arial, sans-serif
+  text-transform: lowercase
+
+body
+  font-size: 0.8em
 
 #site
   margin: 0
 
 header, footer
-  background: #444
+  background: #444 url("/wood_pattern.png")
   color: #FFF
   padding: 0.5em 1em
+  box-shadow: inset 0 0 1em #222 
 
 header
   margin: 0 0 1em 0
   overflow: auto
-  box-shadow: 0 0.5em 2em #CCC
   h1
-    color: #FFF
+    color: #000
     font-size: 2em
     font-weight: normal
     float: left
-    text-shadow: 0 1px 0 #000
+    text-shadow: 0 1px 0 #FFF
   form
     float: right
     input, select
@@ -44,13 +47,16 @@ footer
     font-size: 1.5em
     margin: 0 0 0.5em 0
   #toolbar
-    background: #CCC
+    background: #333 url("/darkdenim3.png")
+    color: #FFF
     border: 1px solid #999
+    overflow: auto
     padding: 0.5em
     a
       text-decoration: none
       font-weight: bold
     form
+      float: left
       fieldset
         border: 0
         display: inline
@@ -58,11 +64,15 @@ footer
           padding: 0.25em
       fieldset.options
         float: right
+    button
+      padding: 0.25em
+    button.advanced
+      float: right
   #wordtree
     background-color: #FAFAFA
     box-shadow: inset 0 0 1em #777
     height: 800px
-    width: 800px
+    width: 100%
     path.link 
       fill: none
       stroke: #999
@@ -76,7 +86,10 @@ footer
       text.magnitude
         font: 0.7em sans-serif
         fill: #333
-        text-anchor: middle
+        text-anchor: right
+        opacity: 0
+      &:hover
+        opacity: 1
       circle 
         fill: #DE9
         opacity: 0.5
@@ -104,96 +117,3 @@ nav.pagination
   .current
     background-color: #FC0
     color: #000
-=======
-body
-  *
-    font: normal 1em $f1
-    margin: 0
-    padding: 0
-  background: $c2
-  border-top: 0.5em solid $c1
-  font-size: 0.8em
-  margin: 0
-
-header, footer 
-  display: block
-  overflow: auto
-header 
-  h1 
-    color: $c1
-    float: left
-    font-size: 2em
-    font-weight: 700
-    margin: 0 0 0.5em 0
-    span 
-      color: $c2 
-      text-shadow: 0 0 3px lighten($c2, 50)
-  form#search 
-    float: right
-    margin: 1em
-    input 
-      border: 1px solid #CCC
-      padding: 2px
-footer 
-  border-top: 1px solid #999
-  text-align: right
-  padding: 1em
-
-nav#primary
-  @include gradient
-  background-color: $c2
-  border-radius: 3px
-  clear: both
-  display: block
-  overflow: auto
-  margin: 0 0 1em 0
-  @include shadow
-  a
-    border-right: 1px solid $c2
-    color: $c1
-    float: left
-    font-weight: 700
-    display: block
-    text-decoration: none
-    text-transform: uppercase
-    padding: 0.5em 1em
-    &:hover
-      background-color: $subtlebg
-      color: $subtlefg
-
-#site 
-  padding: 1em
-
-#main 
-  overflow: auto
-  h1 
-    color: $c1
-    font: bold 1.4em $f1
-    margin: 0 0 1em 0
-  h2 
-    color: $c2
-    font: bold 1.2em $f1
-    margin: 0 0 1em 0
-  a
-    color: $subtlefg
-  ul
-    margin: 0 0 0 2em
-
-div.pagination
-  display: block
-  background: #333 !important
-  float: none
-  overflow: auto
-  em, span, a 
-    display: block
-    background: #222
-    font-weight: bold
-    color: #fff
-    float: left
-    padding: 0.5em 1em
-    margin: 0 1px 0 0
-  a
-    text-decoration: none
-    color: #fff !important
-    &:hover
-      background: #fc0

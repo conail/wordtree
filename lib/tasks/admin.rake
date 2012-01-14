@@ -1,5 +1,6 @@
 require 'csv'
-require 'redis'
+
+include Tree
 
 namespace :admin do
   desc 'Reset'
@@ -45,21 +46,38 @@ namespace :admin do
     # Create a MongoDB document for each word tree.
     # Quit if the same word is repeated.  
 
-    root = 'red'
+    term = 'of'
+    cursor = [term]
+    tree = {term => []}
 
     sentences = Sentence.
-      select("SUBSTR(clean, LOCATE('#{root} ', clean)) AS l").
+      select("SUBSTR(clean, LOCATE('#{term} ', clean)) AS l").
       order('l DESC').
-      find($r.smembers("search:#{root}")).
+      find($r.smembers("search:#{term}")).
       map{|x| x.l.split(' ')}
-    tree = []
-    sentences.last.size.times do |i|
-      x = sentences[-i]
-      y = sentences[-i-1]
-      p = longest_common_prefix(x,y).inspect
-      #remainder = sentences[-i] - p
-      puts p
+    sentences.reject!(&:empty?)
+    
+    max_length = sentences.max.size
+    sentences.size.times do |i|
+      0.upto(max_length) do |j|
+        current_term = sentences[i][j]
+        next_term    = sentences[i+1][j] unless i == sentences.size - 1
+        prev_term    = sentences[i-1][j] unless i == 0
+
+        # nothing to consider
+        if sentences[i][j].nil? then
+
+        elsif next_term != current_term then
+          remainder << sentences[i].pop
+        else
+          n = TreeNode.new current_term
+        end
+      end
+      f = sentences[i] - remainder.reverse
+      puts f.inspect #if f.size > 2
     end
+    puts max_length
+    puts sentences.max.size
   end
 end
 

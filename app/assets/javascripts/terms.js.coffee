@@ -40,7 +40,7 @@ $(document).ready ->
 
     node
       .append("circle")
-      .attr("r", (d) -> Math.sqrt(d.keys))
+      .attr("r", (d) -> Math.sqrt(d.keys/2))
 
     node
       .append("text")
