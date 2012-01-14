@@ -10,3 +10,13 @@
   font-family: DIN;
   src: url('/fonts/DINNeuzeitGroteskStd-BdCond.otf') format('opentype');
 }
+
+@font-face { 
+  font-family: Caecilia;
+  src: url('/fonts/CaeciliaLTStd-Roman.otf') format('opentype');
+}
+
+@font-face { 
+  font-family: Gotham;
+  src: url('/fonts/Gotham-Book.otf') format('opentype');
+}
