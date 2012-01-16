@@ -5,13 +5,13 @@ gem 'sqlite3'
 #gem 'mongoid'
 gem 'mysql2'
 gem 'hirb'
-gem 'tree'
 gem 'redis'
 gem 'kaminari'
 gem 'bson_ext'
 gem 'haml'
 gem 'nokogiri'
 gem 'jquery-rails'
+gem "tree"
 
 group :assets do
   gem 'sass-rails',   '~> 3.1.5'

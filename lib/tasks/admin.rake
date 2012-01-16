@@ -6,8 +6,38 @@ class TreeNode
   def path
     p = []
     x = self
-    p << x && x = x.parent while x
-    p
+    p << x.name && x = x.parent while x
+    p.reverse
+  end
+
+  def find(name)
+    self[name] || self << TreeNode.new(name)
+  end
+
+  def remainder
+    p = []
+    x = self
+    while x do
+      p << x.name unless x.name.nil?
+      x = x.children.first
+    end
+    p[1..-1].join(' ')
+  end
+end
+
+
+class Node
+  attr_accessor :term
+
+  def initialize(term)
+    @n = term
+    @children = []
+    @names = []
+  end
+
+  def add(node)
+
+
   end
 end
 
@@ -54,32 +84,35 @@ namespace :admin do
 
   desc ''
   task treeify: :environment do
-    # Create a MongoDB document for each word tree.
-    # Quit if the same word is repeated.  
-
-    term = 'even'
-    node = TreeNode.new(term)
-    tree = node
-
+    term = 'the'
+    tree = TreeNode.new(term)
     sentences = Sentence.
       select("SUBSTR(clean, LOCATE('#{term} ', clean)) AS l").
-      order('l DESC').
       find($r.smembers("search:#{term}")).
       map{|x| x.l.split(' ')}.
       reject!(&:empty?)
     
-    # the quick brown
-    # the quick brown
-    # the quick
-    #   sentences.size
     sentences.each do |sentence|
-      begin
-        node << TreeNode.new(sentence.last)
-      rescue
-        puts sentence.last
-        puts node.children.size
+      tree = tree.root
+      sentence[1..-1].each do |word|
+        tree = tree.find(word)
       end
     end
+=begin
+    leaves = []
+    tree.root.each {|x| leaves << x if x.children.empty? and x.parent.children.size == 1}
+    leaves.each do |leaf|
+      node = leaf
+      rem = []
+      while node.parent and node.parent.children.size == 1 do
+        rem << node.name
+        node = node.parent
+      end
+      node.remove! node.children.first
+      node << TreeNode.new(rem.reverse[1..-1].join(' '))
+    end
+=end
+    puts Marshal::dump(tree.root)
   end
 end
 
