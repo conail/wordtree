@@ -4,6 +4,8 @@ $(document).ready ->
 
   $("#toolbar form").find("input, select").change (e) ->
     $("#toolbar form").submit()
+  $("#toolbar button.advanced").click (e) ->
+    $("fieldset.advanced").toggle()
 
   tree = d3.layout.tree()
     .size([c.height() - 40, c.width() - 160])

@@ -50,8 +50,9 @@ footer
     background: #333 url("/darkdenim3.png")
     color: #FFF
     border: 1px solid #999
-    overflow: auto
     padding: 0.5em
+    height: 2em
+    position: relative
     a
       text-decoration: none
       font-weight: bold
@@ -62,8 +63,30 @@ footer
         display: inline
         input, select
           padding: 0.25em
+        .field
+          margin: 0 0 1em 0
+          label
+            font-weight: bold
+            width: 8em
+            margin: 0 1em 0 0
+            float: left
+          input
       fieldset.options
         float: right
+      fieldset.advanced
+        background-color: #EEE
+        color: #111
+        width: 20em
+        position: absolute
+        display: none
+        border: 0
+        right: 0
+        top: 3em
+        padding: 1em
+        box-shadow: 0 0.5em 1em #CCC
+        #status
+          background-color: #CCC
+          padding: 1em
     button
       padding: 0.25em
     button.advanced

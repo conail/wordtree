@@ -25,21 +25,26 @@ class TreeNode
   end
 end
 
-
+=begin
 class Node
   attr_accessor :term
 
-  def initialize(term)
-    @n = term
-    @children = []
-    @names = []
+  def initialize(name)
+    @name      = name
+    @children  = []
+    @names     = []
+    @documents = []
   end
 
   def add(node)
+    if @names.include? node.name then
 
-
+    else
+      @children << node
+    end
   end
 end
+=end
 
 namespace :admin do
   desc 'Reset'
@@ -74,7 +79,7 @@ namespace :admin do
       Nokogiri(d.xml).css('body s').each do |x|
         s = Sentence.create(text: x.text, clean: clean(x.text))
         words = s.clean.split(' ')
-        words.each_index do |w| 
+        words.each_index do |i| 
           $r.sadd("link:#{words[i]}:#{words[i+1]}", s.id) if words[i+1]
           $r.sadd("search:#{words[i]}", s.id)
         end
@@ -84,20 +89,23 @@ namespace :admin do
 
   desc ''
   task treeify: :environment do
-    term = 'the'
-    tree = TreeNode.new(term)
-    sentences = Sentence.
-      select("SUBSTR(clean, LOCATE('#{term} ', clean)) AS l").
-      find($r.smembers("search:#{term}")).
-      map{|x| x.l.split(' ')}.
-      reject!(&:empty?)
-    
-    sentences.each do |sentence|
-      tree = tree.root
-      sentence[1..-1].each do |word|
-        tree = tree.find(word)
+    $r.keys("search:*").map!{|x| x[7..-1]}.each do |term|
+      puts term
+      tree = TreeNode.new(term)
+      sentences = Sentence.
+        select("SUBSTR(clean, LOCATE('#{term} ', clean)) AS l").
+        find($r.smembers("search:#{term}")).
+        map{|x| x.l.split(' ')}.
+        reject!(&:empty?)
+
+      next if sentences.nil?
+
+      sentences.each do |sentence|
+        tree = tree.root
+        sentence[1..-1].each do |word|
+          tree = tree.find(word)
+        end
       end
-    end
 =begin
     leaves = []
     tree.root.each {|x| leaves << x if x.children.empty? and x.parent.children.size == 1}
@@ -112,7 +120,8 @@ namespace :admin do
       node << TreeNode.new(rem.reverse[1..-1].join(' '))
     end
 =end
-    puts Marshal::dump(tree.root)
+      Word.create name: term, body: Marshal::dump(tree.root)
+    end
   end
 end
 

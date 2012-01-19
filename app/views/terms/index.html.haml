@@ -6,6 +6,20 @@
       = label_tag :search, 'Term:'
       = text_field_tag :search, params[:search]
       = submit_tag 'Search'
+    %fieldset.advanced
+      .field
+        = label_tag :level, 'Level'
+        = select_tag :level, options_for_select(['All', 1, 2, 3, 4])
+      .field
+        = label_tag :level, 'Genre'
+        %select
+      .field
+        = label_tag :level, 'Discipline'
+        %select
+      #status
+        %p.status Status
   %button.advanced Advanced
 
 #wordtree
+
+= raw @word.body unless @word.nil?

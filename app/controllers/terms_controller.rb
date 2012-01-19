@@ -2,6 +2,7 @@ class TermsController < ApplicationController
   def index
     return if params[:search].nil?
     @term = Term.new(params[:search])
+    @word = Word.find_by_name(params[:search])
     respond_to do |fmt|
       fmt.html
       fmt.json do
