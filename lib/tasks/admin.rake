@@ -1,16 +1,5 @@
 require 'csv'
 
-include Tree
-
-class TreeNode
-  def path
-    p = []
-    x = self
-    p << x && x = x.parent while x
-    p
-  end
-end
-
 namespace :admin do
   desc 'Reset'
   task reset: [:read, :split]
@@ -42,10 +31,15 @@ namespace :admin do
       puts d.id
 
       Nokogiri(d.xml).css('body s').each do |x|
-        s = Sentence.create(text: x.text, clean: clean(x.text))
+        s = Sentence.create(
+          text:  x.text,
+          clean: x.text.strip.downcase.gsub(/[^a-z0-9 ]/, '')
+        )
         words = s.clean.split(' ')
-        words.each_index do |w| 
-          $r.sadd("link:#{words[i]}:#{words[i+1]}", s.id) if words[i+1]
+        words.each_index do |i| 
+          if words[i+1] then
+            $r.sadd("link:#{words[i]}:#{words[i+1]}", s.id)
+          end
           $r.sadd("search:#{words[i]}", s.id)
         end
       end
@@ -54,12 +48,8 @@ namespace :admin do
 
   desc ''
   task treeify: :environment do
-    # Create a MongoDB document for each word tree.
-    # Quit if the same word is repeated.  
-
     term = 'even'
-    node = TreeNode.new(term)
-    tree = node
+    tree = TreeNode.new(term)
 
     sentences = Sentence.
       select("SUBSTR(clean, LOCATE('#{term} ', clean)) AS l").
@@ -68,21 +58,50 @@ namespace :admin do
       map{|x| x.l.split(' ')}.
       reject!(&:empty?)
     
-    # the quick brown
-    # the quick brown
-    # the quick
-    #   sentences.size
     sentences.each do |sentence|
-      begin
-        node << TreeNode.new(sentence.last)
-      rescue
-        puts sentence.last
-        puts node.children.size
+      tree = tree.root
+      sentence.each do |word|
+        tree = tree << TreeNode.new(word) 
+        puts tree.root.term
       end
     end
   end
 end
 
-def clean(str)
-  str.strip.downcase.gsub(/[^a-z0-9 ]/, '')
+class TreeNode
+  attr_accessor :term, :children, :parent
+
+  def initialize(term)
+    @term = term
+    @children = []
+    @parent = nil
+  end
+
+  def to_s
+    pt = @parent.term unless @parent.nil?
+    ch = @children.size
+    "<Node term:'#{@term}' parent:'#{pt}' chidlren:#{ch}>"
+  end
+
+  def root
+    n = self
+    n = n.parent while not n.parent.nil?
+    n
+  end
+
+  def child_terms
+    @children.map(&:term)
+  end 
+
+  def <<(node)
+    idx = child_terms.index(node.term)
+    if idx.nil? then
+      @children << node
+      node.parent = self
+    else
+      n = @children[idx]
+      node.children.each{|x| n << x}
+    end
+    n || node
+  end
 end
