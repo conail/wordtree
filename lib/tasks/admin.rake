@@ -48,7 +48,7 @@ namespace :admin do
 
   desc ''
   task treeify: :environment do
-    term = 'of'
+    term = 'if'
     tree = TreeNode.new(term)
 
     sentences = Sentence.
@@ -66,13 +66,14 @@ namespace :admin do
     end
 
     tree = tree.root
-    
+    tree.breadth{|n| n.collapse}
+
     x = Marshal::dump(tree)
-    time = Benchmark.realtime do
+puts x
+    time = Benchmark.realtime do 
       Marshal::load(x)
     end
     puts time
-
   end
 end
 
@@ -83,6 +84,10 @@ class TreeNode
     @term = term
     @children = []
     @parent = nil
+  end
+  
+  def clear!
+    @children = []
   end
 
   def to_s
@@ -121,6 +126,20 @@ class TreeNode
     end
   end
 
+  def count
+    @children.inject(1){|sum, n| sum += n.count}
+  end
+
   def collapse
+    a = []
+    n = self
+    begin
+      return false if n.children.size != 1
+      a << n.term
+      n = n.children.first
+    end while not n.children.empty?
+    a << n.term
+    @term = a.join(' ')
+    @children = []
   end
 end
