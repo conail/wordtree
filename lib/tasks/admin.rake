@@ -48,7 +48,7 @@ namespace :admin do
 
   desc ''
   task treeify: :environment do
-    term = 'even'
+    term = 'of'
     tree = TreeNode.new(term)
 
     sentences = Sentence.
@@ -66,10 +66,13 @@ namespace :admin do
     end
 
     tree = tree.root
-    tree.breadth do |x|
-      puts x.term
+    
+    x = Marshal::dump(tree)
+    time = Benchmark.realtime do
+      Marshal::load(x)
     end
-  
+    puts time
+
   end
 end
 
@@ -116,5 +119,8 @@ class TreeNode
       yield n
       n.children.each{|x| q << x}
     end
+  end
+
+  def collapse
   end
 end
