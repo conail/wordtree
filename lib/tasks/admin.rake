@@ -62,9 +62,14 @@ namespace :admin do
       tree = tree.root
       sentence.each do |word|
         tree = tree << TreeNode.new(word) 
-        puts tree.root.term
       end
     end
+
+    tree = tree.root
+    tree.breadth do |x|
+      puts x.term
+    end
+  
   end
 end
 
@@ -103,5 +108,13 @@ class TreeNode
       node.children.each{|x| n << x}
     end
     n || node
+  end
+
+  def breadth
+    q = [self]
+    while (n = q.pop) != nil
+      yield n
+      n.children.each{|x| q << x}
+    end
   end
 end
