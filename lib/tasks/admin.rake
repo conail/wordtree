@@ -1,4 +1,5 @@
 require 'csv'
+require 'json'
 
 namespace :admin do
   desc 'Reset'
@@ -65,15 +66,8 @@ namespace :admin do
       end
     end
 
-    tree = tree.root
-    tree.breadth{|n| n.collapse}
-
-    x = Marshal::dump(tree)
-puts x
-    time = Benchmark.realtime do 
-      Marshal::load(x)
-    end
-    puts time
+    tree.breadth(&:collapse)
+    puts tree.json  
   end
 end
 
@@ -93,7 +87,11 @@ class TreeNode
   def to_s
     pt = @parent.term unless @parent.nil?
     ch = @children.size
-    "<Node term:'#{@term}' parent:'#{pt}' chidlren:#{ch}>"
+    "<Node term:'#{@term}' parent:'#{pt}' children:#{ch}>"
+  end
+
+  def to_json
+        
   end
 
   def root
@@ -124,6 +122,19 @@ class TreeNode
       yield n
       n.children.each{|x| q << x}
     end
+  end
+
+  def depth(&block) 
+    yield self
+    @children.each{|n| n.depth(&block)}
+    puts '---'
+  end
+
+  def json
+    str = "{'term': '#{self.term}', 'children': [" 
+    str += @children.map(&:json).join(', ')
+    str += ']}'
+    str
   end
 
   def count
