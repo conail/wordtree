@@ -49,6 +49,8 @@ namespace :admin do
 
   desc ''
   task treeify: :environment do
+    
+    Tree.delete_all
     term = 'if'
     tree = TreeNode.new(term)
 
@@ -66,8 +68,8 @@ namespace :admin do
       end
     end
 
-    tree.breadth(&:collapse)
-    puts tree.json  
+    tree.breadth(&:collapse) 
+    Tree.create term: term, tree: Marshal::dump(tree)
   end
 end
 
