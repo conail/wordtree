@@ -1,50 +1,5 @@
 require 'csv'
-
-include Tree
-
-class TreeNode
-  def path
-    p = []
-    x = self
-    p << x.name && x = x.parent while x
-    p.reverse
-  end
-
-  def find(name)
-    self[name] || self << TreeNode.new(name)
-  end
-
-  def remainder
-    p = []
-    x = self
-    while x do
-      p << x.name unless x.name.nil?
-      x = x.children.first
-    end
-    p[1..-1].join(' ')
-  end
-end
-
-=begin
-class Node
-  attr_accessor :term
-
-  def initialize(name)
-    @name      = name
-    @children  = []
-    @names     = []
-    @documents = []
-  end
-
-  def add(node)
-    if @names.include? node.name then
-
-    else
-      @children << node
-    end
-  end
-end
-=end
+require 'json'
 
 namespace :admin do
   desc 'Reset'
@@ -77,10 +32,15 @@ namespace :admin do
       puts d.id
 
       Nokogiri(d.xml).css('body s').each do |x|
-        s = Sentence.create(text: x.text, clean: clean(x.text))
+        s = Sentence.create(
+          text:  x.text,
+          clean: x.text.strip.downcase.gsub(/[^a-z0-9 ]/, '')
+        )
         words = s.clean.split(' ')
         words.each_index do |i| 
-          $r.sadd("link:#{words[i]}:#{words[i+1]}", s.id) if words[i+1]
+          if words[i+1] then
+            $r.sadd("link:#{words[i]}:#{words[i+1]}", s.id)
+          end
           $r.sadd("search:#{words[i]}", s.id)
         end
       end
@@ -89,42 +49,25 @@ namespace :admin do
 
   desc ''
   task treeify: :environment do
-    $r.keys("search:*").map!{|x| x[7..-1]}.each do |term|
-      puts term
-      tree = TreeNode.new(term)
-      sentences = Sentence.
-        select("SUBSTR(clean, LOCATE('#{term} ', clean)) AS l").
-        find($r.smembers("search:#{term}")).
-        map{|x| x.l.split(' ')}.
-        reject!(&:empty?)
+    Tree.delete_all
+    term = 'if'
+    tree = TreeNode.new(term)
 
-      next if sentences.nil?
+    sentences = Sentence.
+      select("SUBSTR(clean, LOCATE('#{term} ', clean)) AS l").
+      order('l DESC').
+      find($r.smembers("search:#{term}")).
+      map{|x| x.l.split(' ')}.
+      reject!(&:empty?)
+    
+    sentences.each do |sentence|
+      tree = tree.root
+      sentence.each do |word|
+        tree = tree << TreeNode.new(word) 
+      end
+    end
 
-      sentences.each do |sentence|
-        tree = tree.root
-        sentence[1..-1].each do |word|
-          tree = tree.find(word)
-        end
-      end
-=begin
-    leaves = []
-    tree.root.each {|x| leaves << x if x.children.empty? and x.parent.children.size == 1}
-    leaves.each do |leaf|
-      node = leaf
-      rem = []
-      while node.parent and node.parent.children.size == 1 do
-        rem << node.name
-        node = node.parent
-      end
-      node.remove! node.children.first
-      node << TreeNode.new(rem.reverse[1..-1].join(' '))
-    end
-=end
-      Word.create name: term, body: Marshal::dump(tree.root)
-    end
+    tree.breadth(&:collapse) 
+    Tree.create(name: term, body: Marshal::dump(tree))
   end
-end
-
-def clean(str)
-  str.strip.downcase.gsub(/[^a-z0-9 ]/, '')
 end
