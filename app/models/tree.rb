@@ -1,7 +1,7 @@
 require 'tree_node'
 
 class Tree < ActiveRecord::Base
-  def root
+  def load
     Marshal::load(body)
   end
 end

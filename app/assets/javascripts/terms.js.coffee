@@ -20,7 +20,7 @@ $(document).ready ->
     .append("g")
     .attr("transform", "translate(100, 20)")
 
-  d3.json "/terms.json"+location.search, (json) ->
+  d3.json "/terms.json"+location.search+"&x="+Math.random(), (json) ->
     nodes = tree.nodes(json)
 
     link = vis.selectAll("path.link")
@@ -40,27 +40,27 @@ $(document).ready ->
         f.submit()
       )
 
-    #node
-    #  .append("circle")
-    #  .attr("r", (d) -> Math.sqrt(d.keys/2))
+    node
+      .append("circle")
+      .attr("r", (d) -> Math.sqrt(d.keys*2))
 
-    #node
-    #  .append("text")
-    #    .text((d) -> d.keys)
-    #    .attr("class", "magnitude")
+    node
+      .append("text")
+        .text((d) -> d.keys + 1)
+        .attr("class", "magnitude")
 
     node.append("text")
       .attr("dx", (d) -> if d.children then -10 else 10)
       .attr("dy", 3)
       .attr("class", "label")
       .attr("text-anchor", (d) -> if d.children then "end" else "start")
-     # .attr("font-size", (d) -> Math.sqrt(d.keys)/2)
-     # .attr("fill-opacity", (d) -> 
-     #   if d.keys == 0 then 0.1 else 1.1 - (1 / d.keys)
-     # )
-     # .attr("font-size", (d) -> 
-     #   s = 2
-     #   s = 14 - Math.floor(1 / d.keys) if d.keys > 0
-     #   s += ""
-     # )
+      .attr("font-size", (d) -> Math.sqrt(d.keys)/2)
+      .attr("fill-opacity", (d) -> 
+        if d.keys == 0 then 0.1 else 1.1 - (1 / d.keys)
+      )
+      .attr("font-size", (d) -> 
+        s = 2
+        s = 14 - Math.floor(1 / d.keys) if d.keys > 0
+        s += ""
+      )
       .text((d) -> d.name)

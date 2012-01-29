@@ -10,7 +10,6 @@ gem 'bson_ext'
 gem 'haml'
 gem 'nokogiri'
 gem 'jquery-rails'
-gem "tree"
 
 group :assets do
   gem 'sass-rails',   '~> 3.1.5'

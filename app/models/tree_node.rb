@@ -50,12 +50,15 @@ class TreeNode
   def depth(&block) 
     yield self
     @children.each{|n| n.depth(&block)}
-    puts '---'
   end
 
   def json
-    str = "{\"keys\": 45, \"name\": \"#{self.term}\""
-    unless @children.empty?
+#    str = "{\"keys\": #{@children.size}, \"name\": \"#{self.term.split(' ').first}\""
+    str = "{\"keys\": #{@children.size}, \"name\": \"#{self.term}\""
+    @children = @children.sort{|x,y| x.children.size <=> y.children.size}
+    @children = @children.reverse
+    @children = @children.slice(0, 5)
+    unless @children.size <= 1
       str += ", \"children\": [#{@children.map(&:json).join(', ')}]"
     end
     str + '}'

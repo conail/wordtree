@@ -12,13 +12,11 @@
         = select_tag :level, options_for_select(['All', 1, 2, 3, 4])
       .field
         = label_tag :level, 'Genre'
-        %select
       .field
         = label_tag :level, 'Discipline'
-        %select
       #status
-        %p.status Status
-  %button.advanced Advanced
+        %p.status
+  %button.advanced Filter for Discipline/Genre/Level
 
 #wordtree
 
