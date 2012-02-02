@@ -82,18 +82,4 @@ namespace :admin do
       Tree.create(name: term, body: Marshal::dump(tree))
     end
   end
-
-  task reorder: :environment do
-    Tree.all.each do |tree|
-      puts tree.name
-      t = Marshal::load(tree.body)
-      t.breadth do |n|
-        n.children.sort! do |a,b| 
-          a.children.size <=> b.children.size
-        end
-      end
-      tree.body = Marshal::dump(t)
-      tree.save
-    end
-  end
 end
