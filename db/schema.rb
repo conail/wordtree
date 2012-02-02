@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(:version => 20120116154204) do
 
   create_table "documents", :force => true do |t|
     t.string   "title"
-    t.string   "content"
     t.string   "student_id"
     t.string   "code"
     t.string   "level"
@@ -27,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20120116154204) do
     t.integer  "sunits"
     t.integer  "punits"
     t.string   "macrotype"
+    t.text     "content"
     t.text     "xml"
     t.datetime "created_at"
     t.datetime "updated_at"
