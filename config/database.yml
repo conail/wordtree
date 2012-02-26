@@ -1,11 +1,8 @@
 development:    
-  adapter: mysql2
-  encoding: utf8
-  username: root
-  password: 
-  database: wordtree_development
-  socket: /var/run/mysqld/mysqld.sock    
-  reconnect: true
+  adapter: sqlite3
+  database: db/development.sqlite3
+  pool: 5
+  timeout: 5000
 
 test:
   adapter: sqlite3

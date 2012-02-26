@@ -27,6 +27,9 @@ class TreeNode
     @children.map(&:term)
   end 
 
+  # Append given node to the current node.
+  # Adds the given node to the children collection of the current node.
+  # Sets the parent pointer of the child node to the current node.
   def <<(node)
     idx = child_terms.index(node.term)
     if idx.nil? then

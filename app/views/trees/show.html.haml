@@ -1,11 +1,11 @@
 - title (params[:search] || 'Wordtree').titleize
 
 #toolbar
-  = form_for @tree do
+  = form_for(@tree) do |f|
     %fieldset
-      = label_tag :search, 'Term:'
-      = text_field_tag :search, params[:search]
-      = submit_tag 'Search'
+      = f.label :name, 'Term:'
+      = f.text_field :name
+      = f.submit 'Search'
     %fieldset.advanced
       .field
         = label_tag :level, 'Level'
@@ -19,5 +19,3 @@
   %button.advanced Filter for Discipline/Genre/Level
 
 #wordtree
-
-= raw @word.body unless @word.nil?

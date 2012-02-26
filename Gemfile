@@ -1,11 +1,10 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.3'
-gem 'sqlite3'
-gem 'mysql2'
-gem 'hirb'
+gem 'rails', '3.1.0'
 gem 'redis'
 gem 'kaminari'
+gem 'thin'
+#gem 'searchlogic'
 gem 'bson_ext'
 gem 'haml'
 gem 'nokogiri'
@@ -17,6 +16,19 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+group :development do
+  gem 'sqlite3'
+  gem 'guard'
+  gem 'guard-livereload'
+  gem 'hirb'
+end
+
 group :test do
   gem 'turn', '0.8.2', require: false
+  gem 'rspec-rails'
+  gem 'sqlite3'
+end
+
+group :production do 
+  gem 'mysql2'
 end

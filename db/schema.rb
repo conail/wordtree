@@ -11,13 +11,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120116154204) do
+ActiveRecord::Schema.define(:version => 20120216094605) do
 
   create_table "documents", :force => true do |t|
     t.string   "title"
     t.string   "student_id"
     t.string   "code"
-    t.string   "level"
     t.string   "date"
     t.string   "module"
     t.string   "dgroup"
@@ -30,7 +29,29 @@ ActiveRecord::Schema.define(:version => 20120116154204) do
     t.text     "xml"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "level"
+    t.string   "genre_family"
+    t.string   "discipline"
+    t.string   "tables"
+    t.string   "figures"
+    t.string   "block"
+    t.string   "quotes"
+    t.string   "formulae"
+    t.string   "lists"
+    t.string   "listlikes"
+    t.string   "abstract"
+    t.string   "ws"
+    t.string   "sp"
+    t.string   "gender"
+    t.string   "dob"
+    t.string   "l1"
+    t.string   "education"
+    t.string   "course"
+    t.string   "texts"
+    t.string   "complex"
   end
+
+  add_index "documents", ["level"], :name => "index_documents_on_level"
 
   create_table "remainders", :force => true do |t|
     t.string   "term"

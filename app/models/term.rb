@@ -1,5 +1,2 @@
-class Term
-  def initialize(term)
-    @term       = term
-  end
+class Term < ActiveRecord::Base
 end
