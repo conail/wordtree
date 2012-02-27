@@ -5,6 +5,12 @@
 
 body
   font-size: 0.8em
+  a
+    color: #000 
+    text-decoration: none
+    font-weight: bold
+    background-color: #FF9
+    padding: 0.2em
 
 #site
   margin: 0
@@ -41,7 +47,31 @@ footer
   color: #666
 
 #page
-  margin: 1em 
+  margin: 0.5em 
+  min-height: 30em
+  form
+    border: 1px solid #999
+    margin: 1em
+    fieldset
+      border: 0
+      padding: 1em
+      background: #FFD
+      legend
+        font-size: 1.2em
+        margin: 0
+        padding: 0
+        background-color: inherit
+      .field
+        label
+          display: block
+          font-weight: bold
+        input, select
+          padding: 0.5em
+      &.controls
+        background: #999
+        box-shadow: inset 0 0 0.5em #333
+        input[type=submit]
+          padding: 1em 2em
   h2
     font-size: 1.5em
     margin: 0 0 0.5em 0

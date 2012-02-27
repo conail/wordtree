@@ -1,2 +1,13 @@
-= form_for(@tree) do |f|
-  = f.submit
+= form_tag '', id: 'basic_search' do
+  %fieldset
+    %legend Search
+    .field
+      = label_tag :term
+      = text_field_tag :term
+  %fieldset.controls 
+    = submit_tag 'Go'
+
+
+= link_to 'Advanced Search', ''
+
+

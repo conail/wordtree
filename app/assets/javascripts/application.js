@@ -5,6 +5,7 @@
 //= require d3.layout.min
 //= require jquery_ujs
 //= require terms
+//= require trees
 //= #require_tree .
 
 CSSStyleDeclaration.prototype.getProperty = function(a) {

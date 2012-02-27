@@ -7,7 +7,7 @@ end
 
 module Wordtree
   class Application < Rails::Application
-    config.encoding = "utf-8"
+    config.encoding = 'utf-8'
     config.filter_parameters += [:password]
     config.assets.enabled = true
     config.assets.version = '1.0'
