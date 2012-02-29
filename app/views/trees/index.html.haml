@@ -4,10 +4,21 @@
     .field
       = label_tag :term
       = text_field_tag :term
+    = link_to 'Advanced Search', '', id: :advanced
+  %fieldset#advanced
+    %legend
+    .field
+      = label_tag :genre
+      = select_tag :genre, options_for_select(Genre.order(:name))
+    .field
+      = label_tag :level
+      = text_field_tag :foo
+    .field
+      = label_tag :discipline
+      = text_field_tag :foo
   %fieldset.controls 
     = submit_tag 'Go'
+    %input{type: :reset, value: 'Clear'}
 
-
-= link_to 'Advanced Search', ''
 
 

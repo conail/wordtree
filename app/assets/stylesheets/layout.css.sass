@@ -56,7 +56,10 @@ footer
       border: 0
       padding: 1em
       background: #FFD
+      display: block
       legend
+        display: block
+        float: none
         font-size: 1.2em
         margin: 0
         padding: 0
@@ -70,8 +73,26 @@ footer
       &.controls
         background: #999
         box-shadow: inset 0 0 0.5em #333
-        input[type=submit]
+        input
           padding: 1em 2em
+          margin-top: 0
+          margin-bottom: 2px
+          color: #FFF
+          text-shadow: 0 1px 0 #000
+          box-shadow: 0 1px 0 #666
+          border: 1px solid #CCC
+          border-radius: 3px
+          &[type=reset]
+            background-color: #C00
+          &[type=submit]
+            background-color: #090
+          &:hover
+            box-shadow: 0 1px 0 #666, inset 0 0 1em #333
+          &:active
+            margin-top: 2px
+            margin-bottom: 0
+  a#advanced
+    float: right
   h2
     font-size: 1.5em
     margin: 0 0 0.5em 0
@@ -86,13 +107,17 @@ footer
     a
       text-decoration: none
       font-weight: bold
-      background: #DDD
-      margin: 0 1em 0 0
+      background: #333
+      margin: 0
+      border: 1px solid #999
+      border-width: 1px 1px 1px 0
       padding: 0.4em 
-      color: #000
-      text-shadow: 0 1px 0 #FFF
+      color: #FFF
+      text-shadow: 0 1px 0 #000
       display: block
       float: left
+    a:first-child
+      border-left: 1px
     form
       float: left
       fieldset
@@ -101,6 +126,7 @@ footer
         input, select
           padding: 0.25em
         .field
+          display: block
           margin: 0 0 1em 0
           label
             font-weight: bold

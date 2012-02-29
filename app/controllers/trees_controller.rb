@@ -6,7 +6,7 @@ class TreesController < ApplicationController
   def show
     headers['Last-Modified'] = Time.now.httpdate
     @tree = Tree.find_by_name(params[:id])
-    return if @tree.nil?
+    if @tree.nil? then
       render 'errors/no_such_tree' 
       return
     end

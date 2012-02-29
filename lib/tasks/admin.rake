@@ -46,31 +46,26 @@ namespace :admin do
     end
   end
 
-  desc ''
+  desc 'Build tree structure for each term.'
   task treeify: :environment do
     Tree.delete_all
     words = $r.keys('search:*').map{|x| x[7..-1]}
-    puts words.inspect
     words.each do |term|
       puts term
       tree = TreeNode.new(term)
 
-      sentences = Sentence.
-        select("SUBSTR(clean, LOCATE('#{term} ', clean)) AS l").
-        order('l DESC').
-        find($r.smembers("search:#{term}")).
-        map{|x| x.l.split(' ')[1..-1]}.
-        reject!(&:nil?)
-      
-      next if sentences.nil?
-
-      sentences.each do |sentence|
+      # Find the sentences relevant to the current term.
+      sentences = $r.smembers("search:#{term}")
+      sentences.each do |id|
         tree = tree.root
-        sentence.each do |word|
+        txt = Sentence.find(id).clean
+        rem = txt[txt.index(term)+term.size..-1].split(' ')
+        rem.each do |word|
           tree = tree << TreeNode.new(word) 
         end
       end
 
+      # Collapse the tree to a suffix array
       tree = tree.root
       tree.breadth do |n|
         n.collapse
