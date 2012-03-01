@@ -10,7 +10,7 @@ class TermsController < ApplicationController
     respond_to do |f|
       f.html
       f.json do
-        render(json: @tree)#.load
+        render(json: Marshall::load(@tree.body))
       end
     end
   end

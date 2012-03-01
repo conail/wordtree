@@ -48,14 +48,16 @@ namespace :admin do
 
   desc 'Build tree structure for each term.'
   task treeify: :environment do
-    Tree.delete_all
+   # Tree.delete_all
     words = $r.keys('search:*').map{|x| x[7..-1]}
+    words = [words[14]]
     words.each do |term|
-      puts term
       tree = TreeNode.new(term)
 
       # Find the sentences relevant to the current term.
       sentences = $r.smembers("search:#{term}")
+      puts "#{sentences.size}\t#{term}"
+
       sentences.each do |id|
         tree = tree.root
         txt = Sentence.find(id).clean
@@ -64,7 +66,7 @@ namespace :admin do
           tree = tree << TreeNode.new(word) 
         end
       end
-
+=begin
       # Collapse the tree to a suffix array
       tree = tree.root
       tree.breadth do |n|
@@ -74,6 +76,7 @@ namespace :admin do
         end
       end
       Tree.create(name: term, body: Marshal::dump(tree))
+=end
     end
   end
 end
