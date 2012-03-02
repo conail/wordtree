@@ -1,6 +1,9 @@
 class TreeNode
-  attr_accessor :term, :children, :parent
-
+  attr_accessor :term
+  attr_accessor :vertices
+  attr_accessor :successors
+  attr_accessor :precedents
+  
   def initialize(term)
     @term = term
     @children = []
@@ -11,7 +14,6 @@ class TreeNode
     @children = []
   end
 
-  # TODO: remerge divergent paths. 
   def find_by_term(str)
     idx = @children.map(&:term).index(str)
     return nil if idx.nil?

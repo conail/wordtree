@@ -46,6 +46,25 @@ namespace :admin do
     end
   end
 
+  desc ''
+  # Store adjency lists for each source term, resulting in a series of weighted directed graphs.
+  # The weights record occurence.
+  # 
+  # Terms are the vertices/list indexes.
+  # Sentence ids are the edges.
+  task vertex: :environment do
+    term = 'red'
+    sentence_ids = $r.smembers("search:#{term}")
+    puts sentence_ids.size
+    vertices = Set.new
+    Sentence.all.each do |sentence|
+      next unless sentence_ids.member?(sentence.id.to_s)
+      vertices.merge(sentence.clean.split(' '))
+      puts vertices.size
+      puts vertices.inspect
+    end
+  end
+
   desc 'Build tree structure for each term.'
   task treeify: :environment do
    # Tree.delete_all
