@@ -52,6 +52,8 @@ namespace :admin do
   # 
   # Terms are the vertices/list indexes.
   # Sentence ids are the edges.
+  # http://neil.fraser.name/news/2010/11/04/?
+  # 
   task vertex: :environment do
     term = 'red'
     sentence_ids = $r.smembers("search:#{term}")

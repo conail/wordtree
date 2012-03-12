@@ -1,8 +1,14 @@
-development:    
+common: &common
+  adapter: postgresql
+  username: root
+
+development:
   adapter: sqlite3
   database: db/development.sqlite3
   pool: 5
   timeout: 5000
+  #<<: *common
+  #database: wordtree_development
 
 test:
   adapter: sqlite3
