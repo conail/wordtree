@@ -7,7 +7,10 @@ namespace :vertex do
     DATASRC  = 'data/CORPUS_UTF-8'
     
     Document.delete_all
-    a = %w[student_id code title level date module genre_family discipline dgroup grade words sunits punits tables figures block quotes formulae lists listlikes abstract ws sp macrotype gender dob l1 education course texts complex]
+    a = %w[student_id code title level date module genre_family discipline 
+           dgroup grade words sunits punits tables figures block quotes 
+           formulae lists listlikes abstract ws sp macrotype gender dob l1 
+           education course texts complex]
     CSV.foreach(METADATA, headers: :first_row) do |r|
       d = Document.create Hash[a.each_with_index.map{|a,i|[a,r[i]]}]
       puts d.code
@@ -37,15 +40,24 @@ namespace :vertex do
     i = 0
     Document.all.each do |doc|
       puts doc.id
-      Nokogiri(doc.xml).css('body s').each do |sentence|
-        i += 1
-        $r.sadd("document:#{doc.id}", i)
-        words = sentence.text.downcase.gsub(',', ' ,').gsub('.', ' .').split(' ')
-        words.each_cons(2) do |vertices|
-          $r.sadd("word:#{vertices.first}", doc.id)
+      Sentence.each do |sentence|
+        # Document to sentence mapping
+        $r.sadd("document:#{doc.id}", sentence.id)
+
+        # Tokenize sentence
+        # Case-insensitive, matches ,
+        words = sentence.text.scan(/\w+(?:[-']\w+)*|'|[-.(]+|\S\w*/i)
+
+        words.each_cons(2) do |src, dst|
+          # Word to Document Mapping
+          $r.sadd("word:#{src}", doc.id)
+
           # Update document-level adjacency matrix
-          $r.zincrby("edge:#{vertices.first}:#{vertices.last}", 1, i)
+          $r.zincrby("edge:#{src}:#{dst}", 1, sentence.id)
         end
+
+        # Last word in array isn't covered by previous loop.
+        $r.sadd("word:#{words.last}", doc.id)        
       end
     end
   end
