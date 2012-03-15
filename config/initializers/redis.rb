@@ -1,1 +1,1 @@
-$r = Redis.new
+$r = Redis.new path: '/tmp/redis.sock'

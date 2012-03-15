@@ -20,7 +20,7 @@ $(document).ready ->
     .append("g")
     .attr("transform", "translate(100, 20)")
 
-  d3.json "/terms.json"+location.search+"&x="+Math.random(), (json) ->
+  d3.json "/trees/"+location.pathname.match(/\w+$/)+".json", (json) ->
     nodes = tree.nodes(json)
 
     link = vis.selectAll("path.link")

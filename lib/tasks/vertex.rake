@@ -33,22 +33,55 @@ namespace :vertex do
  
   desc 'Load Adjacency List'
   task init: :environment do
+    # Reset the cache.
     $r.flushall
-    i = 0
-    Document.all.each do |doc|
-      puts doc.id
-      Nokogiri(doc.xml).css('body s').each do |sentence|
-        i += 1
-        $r.sadd("document:#{doc.id}", i)
-        words = sentence.text.downcase.gsub(',', ' ,').gsub('.', ' .').split(' ')
-        words.each_cons(2) do |vertices|
-          $r.sadd("word:#{vertices.first}", doc.id)
+
+    Document.all.each_with_index do |doc, i|
+      puts i
+
+      doc.sentences.each do |sentence|
+
+        # Document to word mapping
+        $r.sadd("document:#{doc.id}", sentence.id)
+
+        # Tokenize 
+        words = sentence.text.scan(/\w+/)
+        words.each_cons(2) do |src, dst|
+
+          #  Word to document word mapping
+          $r.sadd("word:#{src}", sentence.id)
+
           # Update document-level adjacency matrix
-          $r.zincrby("edge:#{vertices.first}:#{vertices.last}", 1, i)
+          $r.zincrby("edge:#{src}:#{sentence.id}", 1, dst)
         end
+
+        # Last word in sentence not covered by previous loop.
+        $r.sadd("word:#{words.last}", sentence.id)
       end
     end
   end
+
+  desc ''
+  task words: :environment do
+    # Get all the tokens in the corpus
+    words = $r.keys('word:*').map!{|x| x[5..-1]}
+    
+    # make a sorted set for each words collocates
+    words.each do |word|
+      puts word
+      keys = $r.keys("edge:#{word}:*")
+      next if keys.empty?
+      $r.zunionstore "branch:all:#{word}", keys
+    end
+  end
+
+  # ---
+  # source_term sentence_id sentence_id sentence_id
+  # then intersect with document set
+  # 
+  # then (ruby) map the sentence ids to keys for that source term
+  # 
+  # worst case -- the
 
   # return a sorted set of destination words and frequencies given a source word and a document or sentence class.
   # union against sparse matrix?
