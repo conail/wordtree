@@ -1,21 +1,23 @@
 - title (params[:id] || 'Wordtree').titleize
 
-#toolbar
-  = form_for(@tree) do |f|
-    %fieldset
-      = f.label :name, 'Term:'
-      = f.text_field :name
-      = f.submit 'Search'
-    %fieldset.advanced
-      .field
-        = label_tag :level, 'Level'
-        = select_tag :level, options_for_select(['All', 1, 2, 3, 4])
-      .field
-        = label_tag :level, 'Genre'
-      .field
-        = label_tag :level, 'Discipline'
-      #status
-        %p.status
-  %button.advanced Filter for Discipline/Genre/Level
+.navbar
+  .navbar-inner
+    .container
+      = form_for(@tree, html: {class: 'navbar-form pull-left'}) do |f|
+        %fieldset
+          = f.label :name, 'Term:'
+          = f.text_field :name
+          = f.submit 'Search'
+        %fieldset
+          .field
+            = label_tag :level, 'Level'
+            = select_tag :level, options_for_select(['All', 1, 2, 3, 4])
+          .field
+            = label_tag :level, 'Genre'
+          .field
+            = label_tag :level, 'Discipline'
+          #status
+            %p.status
+      %button.advanced Filter for Discipline/Genre/Level
 
 #wordtree

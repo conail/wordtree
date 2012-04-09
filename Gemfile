@@ -9,6 +9,7 @@ gem 'thin'
 gem 'bson_ext'
 gem 'pg'
 gem 'haml'
+gem 'twitter-bootstrap-rails'
 gem 'nokogiri'
 gem 'jquery-rails'
 

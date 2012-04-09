@@ -1,12 +1,12 @@
+//= require jquery
+//= require jquery_ujs
 //= require underscore
 //= require backbone
-//= require jquery
 //= require d3.min
 //= require d3.layout.min
-//= require jquery_ujs
+//= require twitter/bootstrap
 //= require terms
 //= require trees
-//= #require_tree .
 
 CSSStyleDeclaration.prototype.getProperty = function(a) {
     return this.getAttribute(a);

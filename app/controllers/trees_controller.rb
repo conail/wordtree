@@ -7,7 +7,6 @@ class TreesController < ApplicationController
     headers['Last-Modified'] = Time.now.httpdate
 
     @tree = Tree.new  
-    @children = []
     params[:limit] ||= 10
     params[:offset] ||= 0 
     params[:source] ||= params[:id]
@@ -19,18 +18,34 @@ class TreesController < ApplicationController
       )
     end
 
-    word = params[:id]
-    @keys= $r.sinter("set:#{params[:source]}", "word:#{word}")
-    @keys.map!{|x| "edge:#{word}:#{x}"}
-    $r.zunionstore("branch:#{params[:source]}:#{word}", @keys)
-    $r.zrevrange(
-      "branch:#{params[:source]}:#{word}", 
-      params[:offset], 
-      params[:limit], 
-      with_scores: true).each_slice(2) do |name, keys|
+    # maintain ancestor trail
+    $r.sinterstore("trail", "set:#{params[:source]}")
+    
+    # add the parent on each level down
+    # must be breadth-first search
+    #$r.sinterstore("trail", "trail", "word:no")
 
-      @children << {keys: keys.to_i, name: name}
+    word = params[:id]
+    @parent = {name: word, children: []}
+    q = [@parent]
+    until q.empty? do
+      node = q.pop
+      add_children(node, word)
+      q.join node[:children]
     end
+ end
+end
+
+def add_children(node, word)
+  @keys = $r.sinter("trail", "word:#{word}")
+  @keys.map!{|x| "edge:#{word}:#{x}"}
+  $r.zunionstore("branch:#{params[:source]}:#{word}", @keys)
+  $r.zrevrange(
+    "branch:#{params[:source]}:#{word}", 
+    params[:offset], 
+    params[:limit], 
+    with_scores: true).each_slice(2) do |name, keys|
+    node[:children] << {keys: keys.to_i, name: name, children: []}
   end
 end
 
