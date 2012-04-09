@@ -7,7 +7,10 @@ namespace :vertex do
     DATASRC  = 'data/CORPUS_UTF-8'
     
     Document.delete_all
-    a = %w[student_id code title level date module genre_family discipline dgroup grade words sunits punits tables figures block quotes formulae lists listlikes abstract ws sp macrotype gender dob l1 education course texts complex]
+    a = %w[student_id code title level date module genre_family discipline 
+           dgroup grade words sunits punits tables figures block quotes 
+           formulae lists listlikes abstract ws sp macrotype gender dob l1 
+           education course texts complex]
     CSV.foreach(METADATA, headers: :first_row) do |r|
       d = Document.create Hash[a.each_with_index.map{|a,i|[a,r[i]]}]
       puts d.code
@@ -35,28 +38,27 @@ namespace :vertex do
   task init: :environment do
     # Reset the cache.
     $r.flushall
-
-    Document.all.each_with_index do |doc, i|
-      puts i
-
-      doc.sentences.each do |sentence|
-
-        # Document to word mapping
+    i = 0
+    Document.all.each do |doc|
+      puts doc.id
+      Sentence.each do |sentence|
+        # Document to sentence mapping
         $r.sadd("document:#{doc.id}", sentence.id)
 
-        # Tokenize 
-        words = sentence.text.scan(/\w+/)
-        words.each_cons(2) do |src, dst|
+        # Tokenize sentence
+        # Case-insensitive, matches ,
+        words = sentence.text.scan(/\w+(?:[-']\w+)*|'|[-.(]+|\S\w*/i)
 
-          #  Word to document word mapping
-          $r.sadd("word:#{src}", sentence.id)
+        words.each_cons(2) do |src, dst|
+          # Word to Document Mapping
+          $r.sadd("word:#{src}", doc.id)
 
           # Update document-level adjacency matrix
-          $r.zincrby("edge:#{src}:#{sentence.id}", 1, dst)
+          $r.zincrby("edge:#{src}:#{dst}", 1, sentence.id)
         end
 
-        # Last word in sentence not covered by previous loop.
-        $r.sadd("word:#{words.last}", sentence.id)
+        # Last word in array isn't covered by previous loop.
+        $r.sadd("word:#{words.last}", doc.id)        
       end
     end
   end

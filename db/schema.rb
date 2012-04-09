@@ -27,8 +27,8 @@ ActiveRecord::Schema.define(:version => 20120227114646) do
     t.string   "macrotype"
     t.text     "content"
     t.text     "xml"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
     t.integer  "level"
     t.string   "genre_family"
     t.string   "discipline"
@@ -63,36 +63,36 @@ ActiveRecord::Schema.define(:version => 20120227114646) do
     t.string   "term"
     t.text     "body"
     t.integer  "sentence_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "sentences", :force => true do |t|
     t.integer  "document_id"
-    t.text     "text"
-    t.text     "clean"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.text     "text",        :limit => 255
+    t.text     "clean",       :limit => 255
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   create_table "terms", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "trees", :force => true do |t|
     t.string   "name"
     t.text     "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "words", :force => true do |t|
     t.string   "name"
     t.text     "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
 end
