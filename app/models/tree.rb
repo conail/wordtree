@@ -16,22 +16,14 @@ class Tree < ActiveRecord::Base
     q = [@parent]
     until q.empty? do
       node = q.pop
-      add_children(node, term)
+      @keys = $r.sinter("trail", "term:#{term}")
+      @keys.map!{|x| "edge:#{term}:#{x}"}
+      branch = "v:branch:#{source}:#{term}"
+      #$r.zunionstore(branch, @keys)
+      #$r.zrevrange(branch, offset, limit, with_scores: true).each_slice(2) do |name, keys|
+      #  node[:children] << {keys: keys.to_i, name: name, children: []}
+      #end
       q.join node[:children]
     end
   end
-
-  def add_children(node, word)
-    @keys = $r.sinter("trail", "word:#{word}")
-    @keys.map!{|x| "edge:#{word}:#{x}"}
-    $r.zunionstore("branch:#{params[:source]}:#{word}", @keys)
-    $r.zrevrange(
-      "branch:#{params[:source]}:#{word}", 
-      params[:offset], 
-      params[:limit], 
-      with_scores: true).each_slice(2) do |name, keys|
-      node[:children] << {keys: keys.to_i, name: name, children: []}
-    end
-  end
-
 end

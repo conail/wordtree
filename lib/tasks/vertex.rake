@@ -1,4 +1,4 @@
-%w[csv json].each{|x| require x}
+%w[csv json commander/import].each{|x| require x}
 
 namespace :vertex do
   desc 'Read Documents into MySQL.'
@@ -37,13 +37,13 @@ namespace :vertex do
   desc 'Load Adjacency List'
   task init: :environment do
     # Reset the cache.
-    $r.flushall
+    #$r.flushall
     i = 0
-    Document.all.each do |doc|
-      puts doc.id
-      Sentence.each do |sentence|
+    docs = Document.all
+    progress docs do |doc|
+      doc.sentences.each do |sentence|
         # Document to sentence mapping
-        $r.sadd("document:#{doc.id}", sentence.id)
+        $r.sadd("v:document:#{doc.id}", sentence.id)
 
         # Tokenize sentence
         # Case-insensitive, matches ,
@@ -51,14 +51,14 @@ namespace :vertex do
 
         words.each_cons(2) do |src, dst|
           # Word to Document Mapping
-          $r.sadd("word:#{src}", doc.id)
+          $r.sadd("v:word:#{src}", doc.id)
 
           # Update document-level adjacency matrix
-          $r.zincrby("edge:#{src}:#{dst}", 1, sentence.id)
+          $r.zincrby("v:edge:#{src}:#{dst}", 1, sentence.id)
         end
 
         # Last word in array isn't covered by previous loop.
-        $r.sadd("word:#{words.last}", doc.id)        
+        $r.sadd("v:word:#{words.last}", doc.id)        
       end
     end
   end
@@ -66,14 +66,14 @@ namespace :vertex do
   desc ''
   task words: :environment do
     # Get all the tokens in the corpus
-    words = $r.keys('word:*').map!{|x| x[5..-1]}
+    words = $r.keys('v:word:*').map!{|x| x[7..-1]}
     
     # make a sorted set for each words collocates
     words.each do |word|
       puts word
-      keys = $r.keys("edge:#{word}:*")
+      keys = $r.keys("v:edge:#{word}:*")
       next if keys.empty?
-      $r.zunionstore "branch:all:#{word}", keys
+      $r.zunionstore "v:branch:all:#{word}", keys
     end
   end
 
