@@ -1,4 +1,4 @@
-%w[csv json commander/import].each{|x| require x}
+%w[csv json].each{|x| require x}
 
 namespace :vertex do
   desc 'Read Documents into MySQL.'
@@ -21,102 +21,23 @@ namespace :vertex do
 
   desc 'Read sentences.'
   task split: :environment do
+    $r.flushall
     Sentence.delete_all
     Document.all.each do |d|
       puts d.id
       Nokogiri(d.xml).css('body s').each do |x|
-        s       = d.sentences.new
-        s.text  = x.text
-        s.clean = x.text.strip.downcase.gsub(/[^a-z0-9 ]/, '')
-        s.save
+        d.sentences.create(text: x.text)
       end
-    end
-  end
-
- 
-  desc 'Load Adjacency List'
-  task init: :environment do
-    # Reset the cache.
-    #$r.flushall
-    i = 0
-    docs = Document.all
-    progress docs do |doc|
-      doc.sentences.each do |sentence|
-        # Document to sentence mapping
-        $r.sadd("v:document:#{doc.id}", sentence.id)
-
-        # Tokenize sentence
-        # Case-insensitive, matches ,
-        words = sentence.text.scan(/\w+(?:[-']\w+)*|'|[-.(]+|\S\w*/i)
-
+      d.sentences.select('id, text').each do |s|
+        $r.sadd("document:#{d.id}", s.id)
+        words = s.tokenize
         words.each_cons(2) do |src, dst|
-          # Word to Document Mapping
-          $r.sadd("v:word:#{src}", doc.id)
-
-          # Update document-level adjacency matrix
-          $r.zincrby("v:edge:#{src}:#{dst}", 1, sentence.id)
+          $r.zincrby("edge:#{src}:#{dst}", 1, s.id)
+          $r.sadd("word:#{src}", s.id)
+          $r.sadd("dst:#{src}", dst)
         end
-
-        # Last word in array isn't covered by previous loop.
-        $r.sadd("v:word:#{words.last}", doc.id)        
+        $r.sadd("word:#{words.last}", s.id)
       end
     end
   end
-
-  desc ''
-  task words: :environment do
-    # Get all the tokens in the corpus
-    words = $r.keys('v:word:*').map!{|x| x[7..-1]}
-    
-    # make a sorted set for each words collocates
-    words.each do |word|
-      puts word
-      keys = $r.keys("v:edge:#{word}:*")
-      next if keys.empty?
-      $r.zunionstore "v:branch:all:#{word}", keys
-    end
-  end
-
-  # ---
-  # source_term sentence_id sentence_id sentence_id
-  # then intersect with document set
-  # 
-  # then (ruby) map the sentence ids to keys for that source term
-  # 
-  # worst case -- the
-
-  # return a sorted set of destination words and frequencies given a source word and a document or sentence class.
-  # union against sparse matrix?
-  #
-  # OUTPUT
-  # source:term 
-  # | the  | 1 |
-  # | of   | 1 |
-  # | then | 3 |
-  # | four | 5 |
-  # 
-  # INPUT
-  # sentenceclass
-  # | the  | 1 |
-  # | of   | 1 |
-  # | then | 1 |
-  # | four | 1 |
-  #
-  # sorted set 1: key: term:xxx occurrence
-  # set 2: dynamic -- all the words within a sentenceclass
-  # set 3: dynamic -- a sentence class -- a uid and then a set of sentence ids
-  # set 4: documents to sentences
-  # set 5: sentences to words
-  #
-  #
-  # 1. search arrives with set of document ids and root term
-  # 2. get set of relevant sentences
-  # 3. get words within those sentences
-  # x-1. get set of potential child terms
-  # x. get sorted set of child terms for source
-  
-
-  #def normalize(str)
-  #  str.downcase.gsub(/[^a-z0-9 ]/i, '').strip
-  #end
 end

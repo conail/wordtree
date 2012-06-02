@@ -1,20 +1,17 @@
 common: &common
-  adapter: postgresql
+  adapter: mysql
   username: root
+  password: buddha 
+  encoding: utf8
+  pool: 5
 
 development:
-  adapter: sqlite3
-  database: db/development.sqlite3
-  pool: 5
-  timeout: 5000
-  #<<: *common
-  #database: wordtree_development
+  <<: *common
+  database: wordtree_development_vertex
 
 test:
-  adapter: sqlite3
-  database: db/test.sqlite3
-  pool: 5
-  timeout: 5000
+  <<: *common
+  database: wordtree_test_vertex
 
 production:
   adapter: sqlite3

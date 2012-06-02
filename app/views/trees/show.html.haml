@@ -2,16 +2,13 @@
 
 .row
   .span3
-    = form_for(@tree, html: {class: 'navbar-search form-inline pull-left'}) do |f|
+    = simple_form_for(@tree, html: {class: 'navbar-search form-inline pull-left'}) do |f|
       %fieldset
-        = f.text_field :name, placeholder: 'Enter a word/phrase'
-        = f.submit 'Search', class: :btn
-        = label_tag :level, 'Level'
-        = select_tag :level, options_for_select(['All', 1, 2, 3, 4])
-        = label_tag :level, 'Genre'
-        = label_tag :level, 'Discipline'
-        #status
-          %p.status
-    %button.advanced.btn.pull-right Filter
-
+        %legend Term Search
+        = f.input :name, label: 'Term', placeholder: 'Enter a word/phrase', input_html: {value: params[:id]}
+        = f.input :level, collection: 1..4
+        = f.input :genre, collection: 1..4
+        = f.input :discipline, collection: 1..4
+      %fieldset.controls
+        = f.button :submit, label: 'Search', class: :btn
   #wordtree.span9

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120227114646) do
+ActiveRecord::Schema.define(:version => 20120509134323) do
 
   create_table "documents", :force => true do |t|
     t.string   "title"
@@ -49,11 +49,18 @@ ActiveRecord::Schema.define(:version => 20120227114646) do
     t.string   "course"
     t.string   "texts"
     t.string   "complex"
+    t.integer  "level_id"
   end
 
   add_index "documents", ["level"], :name => "index_documents_on_level"
 
   create_table "genres", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "levels", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -69,10 +76,10 @@ ActiveRecord::Schema.define(:version => 20120227114646) do
 
   create_table "sentences", :force => true do |t|
     t.integer  "document_id"
-    t.text     "text",        :limit => 255
-    t.text     "clean",       :limit => 255
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.text     "text"
+    t.text     "clean"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "terms", :force => true do |t|

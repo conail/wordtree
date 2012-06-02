@@ -1,18 +1,21 @@
 source 'http://rubygems.org'
 
-#gem 'rails', '3.1.0'
 gem 'rails', '3.2.0'
 gem 'redis'
-gem 'commander'
 gem 'highline'
+gem 'simple_form'
 gem 'kaminari'
 gem 'thin'
+gem 'multi_json', '1.3.4'
+#gem 'commander'
 #gem 'searchlogic'
 gem 'bson_ext'
 gem 'haml'
 gem 'twitter-bootstrap-rails'
 gem 'nokogiri'
 gem 'jquery-rails'
+#gem 'pg'
+gem 'mysql'
 
 group :assets do
   #gem 'sass-rails',   '~> 3.1.5'
@@ -23,7 +26,6 @@ group :assets do
 end
 
 group :development do
-  gem 'sqlite3'
   gem 'guard'
   gem 'guard-livereload'
   gem 'hirb'
@@ -33,8 +35,4 @@ group :test do
   gem 'turn', '0.8.2', require: false
   gem 'rspec-rails'
   gem 'sqlite3'
-end
-
-group :production do 
-#  gem 'mysql2'
 end

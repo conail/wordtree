@@ -26,4 +26,8 @@ class Tree < ActiveRecord::Base
       q.join node[:children]
     end
   end
+
+  def level; end
+  def genre; end
+  def discipline; end
 end
