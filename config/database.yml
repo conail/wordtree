@@ -1,7 +1,7 @@
 common: &common
   adapter: mysql
   username: root
-  password: buddha 
+  password: 
   encoding: utf8
   pool: 5
 
