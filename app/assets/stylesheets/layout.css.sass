@@ -2,7 +2,7 @@
   margin: -60px 0 0 0
 
 header, footer
-  background: #444 url("/wood_pattern.png")
+  background: #444 url("/bamboo.jpg")
   color: #FFF
   padding: 0.5em 1em
   box-shadow: inset 0 0 1em #222 
@@ -13,10 +13,13 @@ header
     font-size: 2em
     font-weight: normal
     float: left
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8), 0 0 0.5em #999
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8), 0 0 2px #FFE
     a
-      color: #000
+      color: #7FA82C
       text-decoration: none
+      &:hover
+        color: #7FA82C
+        text-decoration: none
 nav#primary
   background-color: #333
   margin: 0 0 1em 0
@@ -164,3 +167,19 @@ form
   &.controls
     input
       float: right
+
+.link
+  fill: none
+  stroke-width: 1px
+  stroke: #CCC
+
+.freq
+  opacity: 0.5
+  &:hover
+    opacity: 1
+  circle
+    fill: #C00
+    opacity: 0.5
+  text
+    font-size: 10px
+    stroke: #111
