@@ -1,37 +1,39 @@
 #site
   margin: -60px 0 0 0
+  font-family: Foro
 
 header, footer
-  background: #444 url("/bamboo.jpg")
+  background: #FFE url("/bamboo.jpg")
   color: #FFF
   padding: 0.5em 1em
-  box-shadow: inset 0 0 1em #222 
+  box-shadow: inset 0 0 1em rgba(0, 0, 0, 0.7)  
 
 header
   overflow: auto
   h1
-    font-size: 2em
-    font-weight: normal
+    font: normal 2em Foro
     float: left
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8), 0 0 2px #FFE
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8)
     a
-      color: #7FA82C
+      color: #FFF
       text-decoration: none
       &:hover
-        color: #7FA82C
+        color: #09C
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8)
         text-decoration: none
+
 nav#primary
   background-color: #333
   margin: 0 0 1em 0
   overflow: auto
   a
-    padding: 0.75em 1em
+    padding: 0.5em 1em
     float: left
-    border-right: 1px solid #888
+    border-right: 1px solid #555
     display: block
     color: #FFF
-    text-transform: uppercase
     font-weight: bold
+    width: 7em
 
 footer
   background: #222
@@ -183,3 +185,29 @@ form
   text
     font-size: 10px
     stroke: #111
+
+#viewport
+  width: 100% 
+  height: 100%
+  margin: 1em 0 0 0
+  clear: both
+
+.navbar-search
+  background: #EEE
+  border-radius: 4px
+  padding: 0.5em
+  width: 100%
+  margin: 0 0 1em 0
+  fieldset
+    float: left
+    legend
+      display: none
+    .input
+      float: left
+      margin: 0 1em 0 0
+      label
+        padding: 0.3em 0.5em 0 0
+      select
+        width: 10em
+  fieldset.controls
+    float: right

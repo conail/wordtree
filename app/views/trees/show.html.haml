@@ -1,14 +1,13 @@
 - title (params[:id] || 'Wordtree').titleize
 
-.row
-  .span3
-    = simple_form_for(@tree, html: {class: 'navbar-search form-inline pull-left'}) do |f|
-      %fieldset
-        %legend Term Search
-        = f.input :name, label: 'Term', placeholder: 'Enter a word/phrase', input_html: {value: params[:id]}
-        = f.input :level, collection: 1..4
-        = f.input :genre, collection: 1..4
-        = f.input :discipline, collection: 1..4
-      %fieldset.controls
-        = f.button :submit, label: 'Search', class: :btn
-  #viewport.span9
+= simple_form_for(@tree, html: {class: 'navbar-search form-inline pull-left'}) do |f|
+  %fieldset
+    %legend Term Search
+    = f.input :name, label: 'Term', placeholder: 'Enter a word/phrase', input_html: {value: params[:id]}
+    = f.input :level, collection: 1..4
+    = f.input :genre, collection: 1..4
+    = f.input :discipline, collection: 1..4
+  %fieldset.controls
+    = f.submit 'Search', class: :btn
+
+#viewport

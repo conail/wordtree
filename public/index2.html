@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://mbostock.github.com/d3/d3.js"></script>
+    <style type="text/css">
+    .node { stroke: #fff; stroke-width: 4px; }
+    .link { fill: none; stroke: #069; stroke-width: 1px; }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+var root = {};
+var data = [root];
+var tree = d3.layout.tree().size([960, 800]);
+var diagonal = d3.svg.diagonal().projection(function(d) { return [d.y, d.x]; });
+var timer = setInterval(update, 200);
+var vis = d3.select("body").append("svg:svg").append("svg:g");
+
+// First-node
+vis.selectAll("circle").data(tree(root)).enter().append("svg:circle").attr("class", "node").attr("r", 3.5).attr("cx", function(d){ return d.data.x0 = d.x; }).attr("cy", function(d){ return d.data.y0 = d.y; });
+
+function update() {
+  if (data.length >= 500) return clearInterval(timer);
+
+  var d = {id: data.length}, parent = data[~~(Math.random() * data.length)];
+  (parent.children) ? parent.children.push(d) : parent.children = [d];
+  data.push(d);
+
+  var nodes = tree(root);
+  var node = vis.selectAll("circle.node").data(nodes, function(d) { return d.data.id; })
+  node.enter().append("svg:circle").attr("class", "node").attr("r", 5).attr("cx", function(d){ d.data.x0 = d.x; return d.y; }).attr("cy", function(d){ d.data.y0 = d.y;  return d.x; });
+  node.attr("cx", function(d){ d.data.x0 = d.x; return d.y; }).attr("cy", function(d){ d.data.y0 = d.y; return d.x; })
+  var link = vis.selectAll("path.link").data(tree.links(nodes), function(d){ return d.source.data.id+'-'+d.target.data.id });
+  link.enter().insert("svg:path", "circle").attr("class", "link").attr("d", function(d) { var o = {x: d.source.data.x0, y: d.source.data.y0}; return diagonal({source: o, target: o}); }).attr("d", diagonal);
+  link.attr("d", diagonal);
+}
+    </script>
+  </body>
+</html>`

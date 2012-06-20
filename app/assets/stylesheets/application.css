@@ -17,3 +17,8 @@
   font-family: Gotham;
   src: url('/fonts/Gotham-Book.otf') format('opentype');
 }
+
+@font-face { 
+  font-family: Foro;
+  src: url('/fonts/ForoLig.otf') format('opentype');
+}
