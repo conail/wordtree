@@ -1,8 +1,6 @@
 Wordtree::Application.routes.draw do
   resources :add_genres
-
   resources :disciplines
-
   resources :branches
   resources :words
   resources :trees

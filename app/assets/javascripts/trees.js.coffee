@@ -1,5 +1,5 @@
 timer = null
-root = {id: 1, name: location.pathname.match(/\w+$/), children: [], freq: 0}
+root = {id: 1, name: '', children: [], freq: 0}
 data = [root]
 vis = null
 tir = null
@@ -48,15 +48,15 @@ update = (parent, level = 0) =>
       parent.children.push(node)
       data.push(node)
       update(node, level + 1)
-      #reflow()
 
 
 
 $(document).ready ->
-  src      = location.pathname.match(/\w+$/)
+  root.name = $("#tree_name").val()
   c        = $("#viewport")
   margin   = {t: 10, r: 10, b: 10, l: 10}
-  tir      = d3.layout.tree().size([800, 400])
+  tir      = d3.layout.tree().size([800, c.width()])
   diagonal = d3.svg.diagonal().projection((d) -> [d.y, d.x])
-  vis      = d3.select("#viewport").append("svg").attr("width", c.width()).attr("height", c.height()).append("g").attr("transform", "translate(#{margin.l},#{margin.t})")
+  vis      = d3.select("#viewport").append("svg").attr("width", c.width()-100).attr("height", c.height()).append("g").attr("transform", "translate(#{margin.l},#{margin.t})")
   update(root)
+  reflow()
