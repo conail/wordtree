@@ -11,7 +11,26 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120611100510) do
+ActiveRecord::Schema.define(:version => 20120629163014) do
+
+  create_table "add_genres", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "branches", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "sset"
+  end
+
+  create_table "disciplines", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "documents", :force => true do |t|
     t.string   "title"
@@ -27,11 +46,10 @@ ActiveRecord::Schema.define(:version => 20120611100510) do
     t.string   "macrotype"
     t.text     "content"
     t.text     "xml"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.integer  "level"
     t.string   "genre_family"
-    t.string   "discipline"
     t.string   "tables"
     t.string   "figures"
     t.string   "block"
@@ -50,6 +68,8 @@ ActiveRecord::Schema.define(:version => 20120611100510) do
     t.string   "texts"
     t.string   "complex"
     t.integer  "level_id"
+    t.integer  "discipline_id"
+    t.integer  "genre_id"
   end
 
   add_index "documents", ["level"], :name => "index_documents_on_level"

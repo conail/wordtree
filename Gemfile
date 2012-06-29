@@ -35,4 +35,5 @@ group :test do
   gem 'turn', '0.8.2', require: false
   gem 'rspec-rails'
   gem 'sqlite3'
+  gem 'spork'
 end

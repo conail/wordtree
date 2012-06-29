@@ -16,6 +16,22 @@ namespace :vertex do
     end
   end
 
+  desc 'Populate Discipline and Genre'
+  task genre: :environment do
+    METADATA = 'data/BAWE.csv'
+    DATASRC  = 'data/CORPUS_UTF-8'
+    
+    a = %w[student_id code title level date module genre_family discipline dgroup grade words sunits punits tables figures block quotes formulae lists listlikes abstract ws sp macrotype gender dob l1 education course texts complex]
+    CSV.foreach(METADATA, headers: :first_row) do |r|
+      puts r[1]
+      d = Document.find_by_code r[1]
+      d.discipline_id = Discipline.find_or_create_by_name(r[7]).id
+      d.genre_id      = Genre.find_or_create_by_name(r[6]).id
+      d.save
+    end
+  end
+
+
   desc 'Read sentences.'
   task split: :environment do
     $r.flushall

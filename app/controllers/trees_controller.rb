@@ -10,6 +10,10 @@ class TreesController < ApplicationController
   def show
     headers['Last-Modified'] = Time.now.httpdate
 
+    #flr = params[:floor] 
+    flr ||= 3
+    limit = params[:limit].to_i
+
     # Create a stub so forms etc. function.
     @tree = Tree.new  
 
@@ -45,7 +49,7 @@ class TreesController < ApplicationController
       end
     end
 
-    $r.zrangebyscore("focus:#{sset}:#{src}", 0, '+inf', with_scores: true).each_slice(2) do |n, f|
+    $r.zrangebyscore("focus:#{sset}:#{src}", flr, '+inf', with_scores: true, limit: [0, limit]).each_slice(2) do |n, f|
       @json << {name: n, freq: f.to_i}
     end
   end

@@ -6,7 +6,7 @@
     = f.input :name, label: 'Term', placeholder: 'Enter a word/phrase', input_html: {value: params[:id]}
     = f.input :level, collection: 1..4
     = f.input :genre, collection: 1..4
-    = f.input :discipline, collection: 1..4
+    = f.input :discipline, collection: Discipline.order(:name)
   %fieldset.controls
     = f.submit 'Search', class: :btn
 

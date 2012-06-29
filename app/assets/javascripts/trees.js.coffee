@@ -1,5 +1,5 @@
 timer = null
-root = {id: 1, name: 'of', children: [], freq: 0}
+root = {id: 1, name: location.pathname.match(/\w+$/), children: [], freq: 0}
 data = [root]
 vis = null
 tir = null
@@ -20,28 +20,36 @@ toggle = (d) ->
   root = d
   d3.json("/trees/#{root.data.name}.json", update)
 
-update = (branch) =>
-  n = root
-  for node in branch
-    node.id = data.length
-    n.children.push(node)
-    data.push(node)
-
-  nodes = tir(n)
+window.reflow = ->
+  nodes = tir(root)
 
   link = vis.selectAll("path.link").data(tir.links(nodes), linkId)
   link.enter().append("svg:path").attr("class", "link").attr("d", diagonal)
 
   node = vis.selectAll("g.node").data(nodes, (d) -> d.data.id)
   g = node.enter().append("g").attr("class", "node")
+
+  f = g.append("g").attr("class", "freq").attr("transform", (d) -> "translate(-10,0)")
+  f.append("circle").attr("r", (d) -> Math.sqrt(d.data.freq))
+  f.append("text").text((d) -> d.data.freq).attr('dx', 10).attr('dy', 10)
+  
   g.attr("transform", (d) -> "translate(#{d.y},#{d.x})")
   g.append("circle").attr("r", 3)
   g.append("text").text((d) -> d.data.name).attr('dy', 5).attr('dx', 8).on("click", toggle)
 
 
-  f = g.append("g").attr("class", "freq").attr("transform", (d) -> "translate(-10,0)")
-  f.append("circle").attr("r", d.data.freq)
-  f.append("text").text((d) -> d.data.freq).attr('dx', d.data.freq / -2).attr('dy', (d.data.freq / -10) + 8)
+
+update = (parent, level = 0) =>
+  return if level > 3
+  d3.json "/branches/#{parent.name}.json",  (d) ->
+    for node in d
+      node.id = data.length
+      parent.children = [] unless parent.children
+      parent.children.push(node)
+      data.push(node)
+      update(node, level + 1)
+      #reflow()
+
 
 
 $(document).ready ->
@@ -51,4 +59,4 @@ $(document).ready ->
   tir      = d3.layout.tree().size([800, 400])
   diagonal = d3.svg.diagonal().projection((d) -> [d.y, d.x])
   vis      = d3.select("#viewport").append("svg").attr("width", c.width()).attr("height", c.height()).append("g").attr("transform", "translate(#{margin.l},#{margin.t})")
-  d3.json("/trees/#{src}.json", update)
+  update(root)
