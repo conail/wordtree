@@ -1,11 +1,14 @@
 require 'spec_helper'
 
 describe Branch do
-  it 'should have a name' do
+  it 'should have a name and a sentence set' do
     branch = Branch.new
     branch.should_not be_valid
+
+    branch.update_attributes name: 'it', sset: 'sset'
+    branch.should be_valid
   end
-  
+
   it 'collocates should return an Array' do 
     branch = Branch.find_or_create_by_name 'it'
     branch.collocates.should be_kind_of(Array)

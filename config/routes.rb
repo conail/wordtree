@@ -7,5 +7,5 @@ Wordtree::Application.routes.draw do
   resources :sentences
   resources :documents
   resources :terms
-  root to: 'trees#index'
+  root to: 'trees#show', id: 'of'
 end

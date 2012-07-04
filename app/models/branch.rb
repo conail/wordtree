@@ -34,7 +34,7 @@ class Branch < ActiveRecord::Base
                      with_scores: true, 
                      limit: [0, limit]).each_slice(2) do |n, f|
 
-      word_freqs << {name: n, freq: f.to_i}
+      word_freqs << {name: n.first, freq: n.last}
     end
  
     return word_freqs
