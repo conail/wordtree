@@ -27,12 +27,14 @@ group :assets do
 end
 
 group :development do
+  gem 'debugger'
   gem 'guard'
   gem 'guard-livereload'
   gem 'hirb'
 end
 
 group :test do
+  gem 'debugger'
   gem 'turn', '0.8.2', require: false
   gem 'rspec-rails'
   gem 'sqlite3'

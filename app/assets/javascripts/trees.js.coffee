@@ -57,14 +57,14 @@ window.reflow = ->
 
   ## Frequency
   freq = enterSelection.append('circle')
-  freq.attr('class', 'freq')
-  freq.attr('r', (d) -> Math.sqrt(d.data.freq))
+    .attr('class', 'freq')
+    .attr('r', (d) -> Math.sqrt(d.data.freq))
   freq = enterSelection.append('text')
-  freq.attr('text-anchor', 'end')
-  freq.attr('font-size', '11px')
-  freq.attr('fill', '#444')
-  freq.attr('y', 5).attr('x', -10)
-  freq.text((d) -> d.data.freq)
+    .attr('text-anchor', 'end')
+    .attr('font-size', '11px')
+    .attr('fill', '#444')
+    .attr('y', 5).attr('x', -10)
+    .text((d) -> d.data.freq)
 
   ## Marker
   marker = enterSelection.append('circle')
@@ -124,5 +124,5 @@ updateData = (parent) =>
         parent.children ||= [] 
         parent.children.push(node)
         data.push(node)
-        if node.level < 4 and node.name not in ['', '.']
-          updateData(node) 
+        #if node.level < 4 and node.name not in ['', '.']
+        #updateData(node) 

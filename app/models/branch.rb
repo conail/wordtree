@@ -1,34 +1,51 @@
+# Branches return the relation between a term and it's direct children.
+#
+# Sentences sets restrict the scope of traversal.
+#
+# name: the source term
+# sset: the sentence set
+
 class Branch < ActiveRecord::Base
   validates :name, presence: true
   validates :sset, presence: true
 
-  def sset_id(level = nil, genre = nil, discipline = nil)
-    $r.sunionstore('sset', *$r.keys('document:*'))
+  after_initialize :generate_label
+
+  def generate_label
+    @label = "str:#{name}:#{sset}"
+  end
+
+  def containing_sset
+    # By default, include all sentences in the sset.
+    if sset == 'all' then
+      $r.sunionstore(@label, *$r.keys('document:*'))
+    end
   end
  
   def cache_scores
-    $r.del("focus:#{self.name}")
+    $r.del @label
 
-    $r.smembers("dst:#{self.name}").each do |dst|
-      sentence_occurences = $r.zrange("edge:#{self.name}:#{dst}", 0, -1, with_scores: true)
+    # Find proceeding terms.
+    $r.smembers("dst:#{name}").each do |dst|
 
-      # Find frequency by summing sentence-level frequencies.
-      freq = 1.step(sentence_occurences.size-1, 2).inject(0) do |sum, i| 
-        sum += sentence_occurences[i].to_i
-      end
+      # Grab the sentence_ids for those terms.
+      @occurs = $r.zrange("edge:#{name}:#{dst}", 0, -1, with_scores: true)
+
+      # Find dst frequency by summing sentence-level frequencies.
+      freq = 1.step(@occurs.size-1, 2).inject(0){|sum, i| sum += @occurs[i].last.to_i}
       
       # Store the word frequency for ranking and later retrieval
-      $r.zincrby("focus:#{self.name}", freq, dst.unpack('C*').pack('U*'))
+      $r.zincrby(@label, freq, dst.unpack('C*').pack('U*'))
     end
 
     return true
   end
 
   def collocates(minimum_score = 0, maximum_score = '+inf', limit = 5)
-    self.cache_scores unless $r.exists "focus:#{self.name}"
+    cache_scores unless $r.exists @label
 
     word_freqs = []
-    $r.zrevrangebyscore("focus:#{self.name}", 
+    $r.zrevrangebyscore(@label, 
                      maximum_score, 
                      minimum_score, 
                      with_scores: true, 

@@ -1,7 +1,6 @@
 class BranchesController < ApplicationController
   def show
-    @branch = Branch.find_or_create_by_name(params[:id])
-
+    @branch = Branch.new(name: params[:id], sset: 'all')
     render json: @branch.collocates.to_json
   end
 end
