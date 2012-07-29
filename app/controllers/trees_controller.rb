@@ -9,11 +9,7 @@ class TreesController < ApplicationController
   end
 
   def show
-    @tree = if params[:id] then
-      Tree.new name: params[:id] 
-    elsif
-      Tree.new params[:tree] 
-    end
+    @tree = Tree.new(params[:id] ? {name: params[:id]} : params[:tree])
 
     # Default is the set of all sentences
     #$r.sunionstore('sset', *$r.keys('document:*'))

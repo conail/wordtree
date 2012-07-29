@@ -15,8 +15,7 @@ gem 'haml'
 gem 'twitter-bootstrap-rails'
 gem 'nokogiri'
 gem 'jquery-rails'
-#gem 'pg'
-gem 'mysql'
+gem 'pg'
 
 group :assets do
   #gem 'sass-rails',   '~> 3.1.5'

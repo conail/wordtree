@@ -11,8 +11,10 @@ namespace :admin do
     DATASRC  = 'data/CORPUS_UTF-8'
     
     Document.delete_all
-    a = %w[student_id code title level date module genre_family discipline dgroup grade words sunits punits tables figures block quotes formulae lists listlikes abstract ws sp macrotype gender dob l1 education course texts complex]
+    a = %w[student_id code title level date module genre discipline dgroup grade words sunits punits tables figures block quotes formulae lists listlikes abstract ws sp macrotype gender dob l1 education course texts complex]
     CSV.foreach(METADATA, headers: :first_row) do |r|
+      r[6] = Genre.create(name: r[6])
+      r[7] = Discipline.create(name: r[7])
       d = Document.create Hash[a.each_with_index.map{|a,i|[a,r[i]]}]
       puts d.code
       d.xml = IO.read("#{DATASRC}/#{d.code}.xml")

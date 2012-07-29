@@ -1,8 +1,8 @@
 common: &common
-  adapter: mysql
-  username: root
+  adapter: postgresql
+  username: conail
   password: 
-  encoding: utf8
+  encoding: unicode
   pool: 5
 
 development:
