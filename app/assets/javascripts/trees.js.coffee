@@ -124,5 +124,5 @@ updateData = (parent) =>
         parent.children ||= [] 
         parent.children.push(node)
         data.push(node)
-        #if node.level < 4 and node.name not in ['', '.']
-        #updateData(node) 
+        if node.level < 4 and node.name not in ['', '.']
+          updateData(node) 

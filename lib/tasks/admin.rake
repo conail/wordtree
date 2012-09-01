@@ -1,105 +1,87 @@
-require 'csv'
-require 'json'
+%w[csv json commander/import].each{|x| require x}
+
+program :name, 'Foo Bar'
+program :version, '1.0.0'
+program :description, 'Stupid command that prints foo or bar.'
+
+METADATA = 'data/BAWE.csv'
+DATASRC  = 'data/CORPUS_UTF-8'
 
 namespace :admin do
   desc 'Reset'
-  task reset: [:read, :split, :treeify]
+  task reset: [:read, :split]
 
-  desc 'Read Documents into MySQL.'
+  desc 'Read Documents into Database.'
   task read: :environment do
-    METADATA = 'data/BAWE.csv'
-    DATASRC  = 'data/CORPUS_UTF-8'
+    a = %w[student_id code title level date module genre discipline dgroup grade words sunits punits tables figures block quotes formulae lists listlikes abstract ws sp macrotype gender dob l1 education course texts complex xml]
+    count = 0
     
     Document.delete_all
-    a = %w[student_id code title level date module genre discipline dgroup grade words sunits punits tables figures block quotes formulae lists listlikes abstract ws sp macrotype gender dob l1 education course texts complex]
     CSV.foreach(METADATA, headers: :first_row) do |r|
-      r[6] = Genre.create(name: r[6])
-      r[7] = Discipline.create(name: r[7])
-      d = Document.create Hash[a.each_with_index.map{|a,i|[a,r[i]]}]
-      puts d.code
-      d.xml = IO.read("#{DATASRC}/#{d.code}.xml")
-      d.save
+      r[6]  = Genre.create(name: r[6])
+      r[7]  = Discipline.create(name: r[7])
+      r[31] = IO.read("#{DATASRC}/#{r[1]}.xml")
+      Document.create(Hash[a.each_with_index.map{|a,i|[a,r[i]]}])
+      puts count += 1
     end
   end
 
-  # Words are added relative to sentences.
-  # The end words only exist in one couple.
   desc 'Read sentences.'
   task split: :environment do
+    count = 0
+
     $r.flushall
     Sentence.delete_all
-
     Document.all.each do |d|
-      puts d.id
-
+      puts count += 1
       Nokogiri(d.xml).css('body s').each do |x|
-        s = Sentence.create(
-          text:  x.text,
-          clean: x.text.strip.downcase.gsub(/[^a-z0-9 ]/, '')
-        )
-        words = s.clean.split(' ')
-        words.each_index do |i| 
-          if words[i+1] then
-            $r.sadd("link:#{words[i]}:#{words[i+1]}", s.id)
-          end
-          $r.sadd("search:#{words[i]}", s.id)
+        # s tags sometimes contain multiple sentences.
+        x.text.split(/\. /).map(&:strip).each do |sentence| 
+          d.sentences.create(text:  sentence)
         end
+      end
+
+      d.sentences.select('id, text').each do |s|
+        $r.sadd("document:#{d.id}", s.id)
+        s.tokenize.each_cons(2) do |src, dst|
+          $r.zincrby("edge:#{src}:#{dst}", 1, s.id)
+          $r.sadd("word:#{src}", s.id)
+          $r.sadd("dst:#{src}", dst)
+        end
+        $r.sadd("word:#{s.tokenize.last}", s.id)
       end
     end
   end
 
-  desc ''
-  # Store adjency lists for each source term, resulting in a series of weighted directed graphs.
-  # The weights record occurence.
-  # 
-  # Terms are the vertices/list indexes.
-  # Sentence ids are the edges.
-  # http://neil.fraser.name/news/2010/11/04/?
-  # 
-  task vertex: :environment do
-    term = 'red'
-    sentence_ids = $r.smembers("search:#{term}")
-    puts sentence_ids.size
-    vertices = Set.new
-    Sentence.all.each do |sentence|
-      next unless sentence_ids.member?(sentence.id.to_s)
-      vertices.merge(sentence.clean.split(' '))
-      puts vertices.size
-      puts vertices.inspect
-    end
-  end
+  # NODE
+  # -----------------------------------------------------------------
+  #
+  # - id -- unique identifier
+  # - depth -- useful for inspection, maybe wildcard searches
+  # - children set
+  # - document membership
+  # - terminal / text -- terminal nodes can have suffixes
+  #
+  # NOT CONSIDERING
+  # - sentence membership -- required for later extraction
+  #
+  # DATA STRUCTURE
+  # - roots     -> Hash [ id ]
+  # - node:id   -> Hash [ Depth, Terminal, Suffix, Parent ]
+  # - children  -> Set  [ node_id ]
+  # - documents -> Ordered Set [ document_id]
 
-  desc 'Build tree structure for each term.'
+  desc 'Read sentences.'
   task treeify: :environment do
-   # Tree.delete_all
-    words = $r.keys('search:*').map{|x| x[7..-1]}
-    words = [words[14]]
-    words.each do |term|
-      tree = TreeNode.new(term)
+    Node.delete_all
 
-      # Find the sentences relevant to the current term.
-      sentences = $r.smembers("search:#{term}")
-      puts "#{sentences.size}\t#{term}"
+    progress Sentence.all do |sentence|
+      tokens = sentence.tokenize
 
-      sentences.each do |id|
-        tree = tree.root
-        txt = Sentence.find(id).clean
-        rem = txt[txt.index(term)+term.size..-1].split(' ')
-        rem.each do |word|
-          tree = tree << TreeNode.new(word) 
-        end
+      until tokens.empty? do
+        Tree.add_tokens(tokens)
+        tokens.shift
       end
-=begin
-      # Collapse the tree to a suffix array
-      tree = tree.root
-      tree.breadth do |n|
-        n.collapse
-        n.children.sort! do |a,b| 
-          a.children.size <=> b.children.size
-        end
-      end
-      Tree.create(name: term, body: Marshal::dump(tree))
-=end
     end
   end
 end

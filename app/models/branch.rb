@@ -32,7 +32,9 @@ class Branch < ActiveRecord::Base
       @occurs = $r.zrange("edge:#{name}:#{dst}", 0, -1, with_scores: true)
 
       # Find dst frequency by summing sentence-level frequencies.
-      freq = 1.step(@occurs.size-1, 2).inject(0){|sum, i| sum += @occurs[i].last.to_i}
+      freq = 1.step(@occurs.size-1, 2).inject(0) do |sum, i| 
+        sum += @occurs[i].last.to_i
+      end
       
       # Store the word frequency for ranking and later retrieval
       $r.zincrby(@label, freq, dst.unpack('C*').pack('U*'))
