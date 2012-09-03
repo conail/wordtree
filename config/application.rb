@@ -11,5 +11,6 @@ module Wordtree
     config.filter_parameters += [:password]
     config.assets.enabled = true
     config.assets.version = '1.0'
+    config.middleware.insert_before 0, 'NodeList'
   end
 end
