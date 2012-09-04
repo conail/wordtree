@@ -20,7 +20,12 @@ $(document).ready ->
   diagonal = d3.svg.diagonal().projection((d) -> [d.y, d.x])
   vis      = d3.select('#viewport g')
   o        = $('#viewport')
-  tree     = d3.layout.tree().size([o.height(), o.width() - 200])
+  tree     = d3.layout.tree().size([o.height(), o.width() - 200]).sort(
+    (a, b) -> 
+      d3.descending(a.data.occurs, b.data.occurs) if a.data.level = 1
+  ).separation((a, b) ->
+    a.parent == b.parent ? 1 : 4
+  )
 
   # Root node
   node = vis.selectAll('g.node')
@@ -61,18 +66,18 @@ window.reflow = ->
   ## Frequency
   freq = enterSelection.append('circle')
     .attr('class', 'freq')
-    .attr('r', (d) -> Math.sqrt(d.data.freq))
+    .attr('r', (d) -> d.data.occurs)
   freq = enterSelection.append('text')
     .attr('text-anchor', 'end')
     .attr('font-size', '11px')
     .attr('fill', '#444')
     .attr('y', 5).attr('x', -10)
-    .text((d) -> d.parent.data.occurs)
+    .text((d) -> d.data.occurs + 1)
 
   ## Marker
   marker = enterSelection.append('circle')
     .attr('class', 'marker')
-    .attr('r', 5)
+    .attr('r', 2)
     .on('click',  (d) -> 
       d.data.children = []
       window.reflow()
@@ -137,7 +142,11 @@ updateData = (parent) =>
     if d?
       for node in d
         node.level = parent.level + 1
+        node.occurs ||= 0
         parent.children ||= [] 
         parent.children.push(node)
         data.push(node)
-        updateData(node) if node.occurs > 0 and node.occurs < 1000
+        if node.level = 1
+          updateData(node) if node.occurs > 3 and node.occurs < 1000
+        else 
+          updateData(node)

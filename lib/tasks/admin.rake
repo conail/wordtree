@@ -9,7 +9,7 @@ DATASRC  = 'data/CORPUS_UTF-8'
 
 namespace :admin do
   desc 'Reset'
-  task reset: [:read, :split]
+  task reset: [:read, :split, :treeify]
 
   desc 'Read Documents into Database.'
   task read: :environment do

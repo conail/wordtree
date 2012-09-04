@@ -1,11 +1,10 @@
 - title (params[:id] || 'Wordtree').titleize
 
 %div
-  %input#tree_id{value: Tree.find_root(params[:id]).id, type: :hidden}
+  %input#tree_id{value: @root.id, type: :hidden}
   %input#tree_name{value: params[:id], type: :hidden}
   %label{for: :suffix_visibility} Show suffixes?
   %input#suffix_visibility{type: :checkbox}
-
 
 %div
   %svg#viewport

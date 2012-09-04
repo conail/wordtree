@@ -9,7 +9,8 @@ class TreesController < ApplicationController
   end
 
   def show
-    root = Tree.find_root(params[:id])
-    @tree = Tree.new(root)
+    @root = Tree.find_root(params[:id])
+    render 'not_found' and return if @root.nil?
+    @tree = Tree.new(@root)
   end
 end

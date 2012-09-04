@@ -1,20 +1,16 @@
 common: &common
-  adapter: postgresql
-  username: conail
-  password: 
-  encoding: unicode
+  adapter: sqlite3
   pool: 5
+  timeout: 5000
 
 development:
   <<: *common
-  database: wordtree_development_vertex
+  database: db/wordtree_development_trie.sqlite3
 
 test:
   <<: *common
-  database: wordtree_test_vertex
+  database: db/wordtree_test_trie.sqlite3
 
 production:
-  adapter: sqlite3
+  <<: *common
   database: db/production.sqlite3
-  pool: 5
-  timeout: 5000
