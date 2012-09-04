@@ -1,5 +1,5 @@
 timer = null
-root = {id: 1, name: '', level: 0, children: [], freq: 0}
+root = {level: 0, children: [], freq: 0}
 data = [root]
 vis = null
 tree = null
@@ -15,6 +15,7 @@ linkLocation = (d) ->
   diagonal({source: o, target: o})
 
 $(document).ready ->
+  root.id = parseInt($('#tree_id').val())
   root.name = $('#tree_name').val()
   diagonal = d3.svg.diagonal().projection((d) -> [d.y, d.x])
   vis      = d3.select('#viewport g')
@@ -41,6 +42,8 @@ $(document).ready ->
   reflow()
   setInterval( reflow, 1000 )
 
+  $('#suffix_visibility').change(reflow())
+
 window.reflow = ->
   # Recompute tree layout.
   nodes = tree(root)
@@ -64,7 +67,7 @@ window.reflow = ->
     .attr('font-size', '11px')
     .attr('fill', '#444')
     .attr('y', 5).attr('x', -10)
-    .text((d) -> d.data.freq)
+    .text((d) -> d.parent.data.occurs)
 
   ## Marker
   marker = enterSelection.append('circle')
@@ -80,6 +83,20 @@ window.reflow = ->
     .text((d) -> d.data.name)
     .attr('y', 5)
     .attr('x', 10)
+    .attr('font-size', (d) -> Math.max(Math.sqrt(d.data.occurs), 1) + 'em')
+    .on('click', (d) -> 
+      root = {level: 0, children: [], freq: 0, name: d.data.name, id: d.data.id}
+      data = [root]
+      updateData(root)
+      reflow()
+    )
+
+  if $('#suffix_visibility').val() == 'on'
+    suffix = enterSelection.append('text')
+      .text((d) -> d.data.suffix)
+      .attr('y', 5)
+      .attr('x', 100)
+      .attr('fill', '#999')
 
   # Animate
   enterSelection
@@ -116,13 +133,11 @@ window.reflow = ->
   link.exit().remove()
 
 updateData = (parent) =>
-  d3.json "/branches/#{parent.name}.json",  (d) ->
+  d3.json "/n/#{parent.id}",  (d) ->
     if d?
       for node in d
-        node.id = data.length
         node.level = parent.level + 1
         parent.children ||= [] 
         parent.children.push(node)
         data.push(node)
-        if node.level < 4 and node.name not in ['', '.']
-          updateData(node) 
+        updateData(node) if node.occurs > 0 and node.occurs < 1000

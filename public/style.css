@@ -1,21 +1,21 @@
-* { border:0; font:1em Arial, sans-serif; margin:0; padding:0; }
+* { border:0; font:1em Helvetica, Arial, sans-serif; margin:0; padding:0; }
 
-body { background:#DDD url("bg.gif"); font-size:0.8em; }
+body { background:#999; font-size:0.8em; }
 a { color:#000; }
 ul { list-style:square; margin:0 0 0 1.6em; }
-p { line-height:1.6em; margin:0 0 1em 0; }
+p { line-height:1.8em; margin:0 0 1em 0; }
 
-#site { background:#FFF; border:1px solid #BBB; margin:1em auto; padding:1em; width:40em; -webkit-box-shadow:0 1em 2em #333; }
+#site { background:#FFF; border:1px solid #BBB; margin:1em auto; padding:1em; width:800px; -webkit-box-shadow:0 1em 2em #333; }
 
-header { background:#333; padding:1em; }
-header h1 { color:#FC0; font:bold 1.6em arial; text-shadow:0 1px 0 #000; }
+header { padding:1em; }
+header h1 { color:#222; font:normal 2em Helvetica, Arial, sans-serif; }
 
-footer { background:#333; color:#999; margin:1em 0 0 0; text-align:right; padding:1em; }
-footer a { color:#999; font-weight:bold; text-decoration:none; }
+footer { border-top: 1px solid #CCC; color:#666; margin-top:1em; padding-top:1em; text-align:right; }
+footer a { color:#666; font-weight:bold; text-decoration:none; }
 footer p { margin:0; }
 
 article { overflow:auto; }
-article h2 { font:bold 1.4em Arial, sans-serif; margin:0 0 0.5em 0; text-shadow:0 1px 0 #CCC; }
-article div { background:#FFD; border:1px solid #EEC; margin:1em 0; padding:1em; }
-article div:hover { background:#EEC; }
+article h2 { font:normal 1.4em Helvetica, Arial, sans-serif; margin:0 0 0.5em 0; text-shadow:0 1px 0 #CCC; }
+article div { margin:1em 0; padding:1em; }
+article div:hover { background:#F7F7F0; }
 article div.small { float:left; margin:1em 1em 0 0; width:17em; }

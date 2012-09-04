@@ -5,7 +5,7 @@
 # - documents -> Ordered Set [ document_id]
 
 class Node
-  attr_reader :id, :name, :suffix
+  attr_reader :id, :name, :suffix, :child_ids, :child_names
 
   # Careful: calls to children build trees
   def children
@@ -14,6 +14,27 @@ class Node
 
   def occurs
     $r.hlen("children:#{@id}")
+  end
+
+  def to_json
+    h = {name: @name}
+    if children.empty?
+      h[:suffix] = @suffix
+    else
+      h[:children] = children.map(&:to_json)  
+    end
+    h
+  end
+
+  def to_json
+    {id: @id, name: @name, occurs: occurs, suffix: @suffix}
+  end
+
+  def output(level = 1)
+    level.times { print '-' }
+    puts "#{@name} #{@suffix}"
+    children.each{|x| x.output(level + 1)}
+    nil
   end
 
   def add_child(options)

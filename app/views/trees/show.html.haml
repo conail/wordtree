@@ -1,16 +1,12 @@
 - title (params[:id] || 'Wordtree').titleize
 
-= simple_form_for(@tree, html: {class: 'navbar-search form-inline pull-left'}) do |f|
-  %fieldset
-    %legend Term Search
-    = f.input :name, label: 'Term', placeholder: 'Enter a word/phrase'
-    = f.input :level, collection: 1..4
-    = f.input :genre, collection: Genre.order(:name)
-    = link_to '?', '', class: :btn
-    = f.input :discipline, collection: Discipline.order(:name)
-    = link_to '?', '', class: :btn
-  %fieldset.controls
-    = f.submit 'Search', class: :btn
+%div
+  %input#tree_id{value: Tree.find_root(params[:id]).id, type: :hidden}
+  %input#tree_name{value: params[:id], type: :hidden}
+  %label{for: :suffix_visibility} Show suffixes?
+  %input#suffix_visibility{type: :checkbox}
 
-%svg#viewport
-  %g{transform: 'translate(10,10)'}
+
+%div
+  %svg#viewport
+    %g{transform: 'translate(10,10)'}

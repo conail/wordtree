@@ -9,12 +9,7 @@ class TreesController < ApplicationController
   end
 
   def show
-    @tree = Tree.new(params[:id] ? {name: params[:id]} : params[:tree])
-
-    # Default is the set of all sentences
-    #$r.sunionstore('sset', *$r.keys('document:*'))
-
-    # Unless there is a set of proceeding terms that matches
-    #unless $r.exists "focus:#{sset}:#{src}" then
+    root = Tree.find_root(params[:id])
+    @tree = Tree.new(root)
   end
 end

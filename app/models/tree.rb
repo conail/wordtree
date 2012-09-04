@@ -1,10 +1,33 @@
+require "benchmark"
+
 class Tree
   attr_reader :root, :headword
 
-  def initialize(node)
-    @root = node
-    @headword = node.name
+  def initialize(name)
+    @root = Tree.find_root(name)
+    @headword = name
   end 
+
+  def print
+    q = [@root]
+
+    until q.empty?
+      node = q.pop 
+      puts node.name
+      q += node.children
+    end
+  end
+
+  def to_json
+    @root.to_json
+  end
+
+  def self.test
+    time = Benchmark.measure do
+      (1..3).each { |i| Tree.new('of').to_json }
+    end
+    puts time
+  end
 
   def self.add_tokens(tokens)
     return if tokens.size < 2
