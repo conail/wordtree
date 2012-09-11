@@ -2,6 +2,7 @@
  *= require 'reset'
  *= require 'layout'
  *= require 'form'
+ *= require 'primary_nav'
  *= require 'breadcrumb'
  *= require 'toolbar'
  *= require 'search'

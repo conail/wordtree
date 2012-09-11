@@ -20,11 +20,9 @@ $(document).ready ->
   diagonal = d3.svg.diagonal().projection((d) -> [d.y, d.x])
   vis      = d3.select('#viewport g')
   o        = $('#viewport')
-  tree     = d3.layout.tree().size([o.height(), o.width() - 200]).sort(
+  tree     = d3.layout.tree().size([o.height() - 20, o.width() - 200]).sort(
     (a, b) -> 
       d3.descending(a.data.occurs, b.data.occurs) if a.data.level = 1
-  ).separation((a, b) ->
-    a.parent == b.parent ? 1 : 4
   )
 
   # Root node
@@ -69,8 +67,7 @@ window.reflow = ->
     .attr('r', (d) -> d.data.occurs)
   freq = enterSelection.append('text')
     .attr('text-anchor', 'end')
-    .attr('font-size', '11px')
-    .attr('fill', '#444')
+    .attr('class', 'freq')
     .attr('y', 5).attr('x', -10)
     .text((d) -> d.data.occurs + 1)
 
@@ -86,9 +83,10 @@ window.reflow = ->
   ## Label
   label = enterSelection.append('text')
     .text((d) -> d.data.name)
-    .attr('y', 5)
-    .attr('x', 10)
-    .attr('font-size', (d) -> Math.max(Math.sqrt(d.data.occurs), 1) + 'em')
+    .attr('class', 'label')
+    .attr('font-size', (d) -> Math.max(Math.log(d.data.occurs), 1) + 'em')
+    .attr('x', '0.8em')
+    .attr('y', '0.3em')
     .on('click', (d) -> 
       root = {level: 0, children: [], freq: 0, name: d.data.name, id: d.data.id}
       data = [root]
@@ -96,11 +94,11 @@ window.reflow = ->
       reflow()
     )
 
-  if $('#suffix_visibility').val() == 'on'
+  if $('#suffix_visibility').val() != 'on'
     suffix = enterSelection.append('text')
       .text((d) -> d.data.suffix)
       .attr('y', 5)
-      .attr('x', 100)
+      .attr('x', (d) -> d.data.name.length * 0.6 + 'em')
       .attr('fill', '#999')
 
   # Animate

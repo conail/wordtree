@@ -16,10 +16,10 @@
           = link_to 'Documentation', root_url
       #page
         %header
-          %h1= yield :title
           %nav.breadcrumb
             = link_to 'Home', root_url
             = link_to 'Keyword Search', root_url
+          %h1= yield :title
         = yield
       %footer
         %p= raw "Copyright #{Time.now.year} &copy; Coventry University.  All Rights Reserved."

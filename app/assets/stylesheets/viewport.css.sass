@@ -1,16 +1,24 @@
 #viewport
+  background-color: rgba(230, 230, 160, 0.2)
   border: 1px solid rgba(50, 50, 50, 0.3)
-  border-radius: 0.3em
-  width: 100% 
+  border-radius: 0 0 0.3em 0.3em
   height: 70em
+  width: 100% 
   font-family: Arial, sans-serif
   clear: both
-  circle.freq
-    fill: #069
-    opacity: 0.15
-    &:hover
-      opacity: 0.5
+  g.node
+    circle.freq
       fill: #FC0
+      opacity: 0.15
+      -webkit-transition: opacity 0.3em linear
+      &:hover
+        opacity: 0.5
+        fill: #FC0
+    text.freq
+      font-size: 10px
+      fill: #111
+    text.label
+
   circle.marker
     fill: #FFF
     stroke: #222
@@ -21,13 +29,3 @@
   stroke-width: 1px
   stroke: #CCC
 
-.freq
-  opacity: 0.2
-  &:hover
-    opacity: 1
-  circle
-    fill: #FC0
-    opacity: 0.5
-  text
-    font-size: 10px
-    stroke: #111
