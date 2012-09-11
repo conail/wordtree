@@ -2,43 +2,49 @@
   margin: -60px 0 0 0
   font-family: Helvetica, Foro
 
-header, footer
-  background: #444
-  color: #FFF
-  padding: 2em
-  box-shadow: inset 0 0 0.5em rgba(0, 0, 0, 0.7)  
-
-header
-  overflow: auto
-  h1
-    font: normal 2em Foro
-    float: left
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8)
-    a
-      color: #FFF
-      text-decoration: none
-      &:hover
-        color: #09C
-        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8)
-        text-decoration: none
-
-nav#primary
-  background-color: #222
-  margin: 0 0 1em 0
-  overflow: auto
-  border-bottom: 1px solid rgba(30, 30, 30, 0.3)
-  a
-    padding: 0.5em 1em
-    float: left
-    border-right: 1px solid rgba(30, 30, 30, 0.3)
-    display: block
+  > header,  > footer
+    background: #666 url('/assets/wood_pattern.png')
     color: #FFF
-    font-weight: bold
-    text-shadow: 0 1px 0 #000
-    width: 7em
-    &:hover
-      text-decoration: none
-      background-color: rgba(50, 50, 50, 0.2)
+    box-shadow: inset 0 0 0.5em rgba(0, 0, 0, 0.7)  
+
+  > header
+    overflow: auto
+    h1
+      font: normal 2em Foro
+      float: left
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8)
+      margin: 1em
+      &:hover
+        -webkit-transform: scale(1.1)
+      a
+        color: #333
+        text-decoration: none
+        -webkit-transition: color 0.5s linear
+        transition: color 0.5s linear
+        &:hover
+          color: #111
+          text-decoration: none
+    nav
+      display: block
+      clear: left
+      background-color: #333
+      overflow: auto
+      border-bottom: 1px solid rgba(30, 30, 30, 0.3)
+      a
+        padding: 0.5em 1em
+        float: left
+        border-right: 1px solid rgba(30, 30, 30, 0.3)
+        display: block
+        color: #FFF
+        font-weight: bold
+        text-shadow: 0 1px 0 #000
+        width: 7em
+        &:hover
+          background-color: #333
+          text-decoration: none
+          -webkit-transform: scale(1.02)
+          color: #FF3
+          background-color: rgba(50, 50, 50, 0.2)
 
 footer
   background: #222
@@ -233,3 +239,12 @@ form
         width: 10em
   fieldset.controls
     float: right
+
+form#search
+  overflow: auto
+  margin: 1em
+  fieldset
+    float: left
+    margin: 0 1em 0 0
+    label
+      font-weight: bold

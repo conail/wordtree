@@ -1,6 +1,6 @@
 module ApplicationHelper
-  def title(str = '')
-    content_for(:title, str)
+  def title(str = 'Wordtree')
+    content_for(:title, str.titleize)
   end
   
   def sortable(col, title = nil)

@@ -1,11 +1,24 @@
-- title (params[:id] || 'Wordtree').titleize
+- title params[:id]
+
+%form#search
+  %fieldset
+    %label#keyword Keyword
+    %input{type: :search, for: :keyword}
+  %fieldset
+    %label#keyword Genre
+    %input{type: :search, for: :keyword}
+  %fieldset
+    %label#keyword Keyword
+    %input{type: :search, for: :keyword}
+  %fieldset
+    %label{for: :suffix_visibility} Show suffixes?
+    %input#suffix_visibility{type: :checkbox}
+  %fieldset.show
+    %input{type: :submit, value: 'Search'}
 
 %div
   %input#tree_id{value: @root.id, type: :hidden}
   %input#tree_name{value: params[:id], type: :hidden}
-  %label{for: :suffix_visibility} Show suffixes?
-  %input#suffix_visibility{type: :checkbox}
 
-%div
-  %svg#viewport
-    %g{transform: 'translate(10,10)'}
+%svg#viewport
+  %g{transform: 'translate(10,10)'}

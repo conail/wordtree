@@ -10,16 +10,16 @@
     #site
       %header
         %h1= link_to 'wordtree', root_url
-      %nav#primary
-        = link_to 'Home', root_url
-        = link_to 'Help', root_url
-        = link_to 'Documentation', root_url
+        %nav#primary
+          = link_to 'Home', root_url
+          = link_to 'Help', root_url
+          = link_to 'Documentation', root_url
       #page
-        %h2= yield :title
-        %ul.breadcrumb
-          %li= link_to 'Home', root_url
-          %span.separator
-          %li= link_to 'Keyword Search', root_url
+        %header
+          %h1= yield :title
+          %nav.breadcrumb
+            = link_to 'Home', root_url
+            = link_to 'Keyword Search', root_url
         = yield
       %footer
         %p= raw "Copyright #{Time.now.year} &copy; Coventry University.  All Rights Reserved."

@@ -7,34 +7,15 @@
 class Node
   attr_reader :id, :name, :suffix, :child_ids, :child_names
 
-  # Careful: calls to children build trees
-  def children
-    @child_ids.map{|x| Node.new(id: x)}
-  end
-
-  def occurs
-    $r.hlen("children:#{@id}")
-  end
+  def children; @child_ids.map{|x| Node.new(id: x)}; end
+  def occurs; $r.hlen("children:#{@id}"); end
 
   def to_json
     h = {name: @name}
-    if children.empty?
-      h[:suffix] = @suffix
-    else
+    children.empty? ?
+      h[:suffix] = @suffix :
       h[:children] = children.map(&:to_json)  
-    end
     h
-  end
-
-  def to_json
-    {id: @id, name: @name, occurs: occurs, suffix: @suffix}
-  end
-
-  def output(level = 1)
-    level.times { print '-' }
-    puts "#{@name} #{@suffix}"
-    children.each{|x| x.output(level + 1)}
-    nil
   end
 
   def add_child(options)
@@ -47,6 +28,10 @@ class Node
       @child_names << new_child.name
       $r.hset("children:#{@id}", new_child.id, new_child.name)
     end
+  end
+
+  def add_document(document_id)
+    $r.sadd("documents:#{@id}", document_id)
   end
 
   def suffix=(suffix)
@@ -68,37 +53,44 @@ class Node
   end
 
   def initialize(options)
-    if options[:id].present? then # retrieve existing node
-      raise NodeNotFoundError unless $r.exists("node:#{options[:id]}")
+    @child_ids   = []
+    @child_names = []
+    @documents   = []
 
-      @id          = options[:id]
-      @name        = $r.hget("node:#{@id}", :name)
-      @suffix      = $r.hget("node:#{@id}", :suffix)
-      @child_ids   = $r.hkeys("children:#{@id}").map(&:to_i)
-      @child_names = $r.hvals("children:#{@id}")
-
-    else # create new node
-      raise NodeIncompleteError unless options[:name].present?
-
-      @id = $r.incr(:node_total)
-
-      @name = options[:name]
-      $r.hset("node:#{@id}", :name, @name)
-
-      if options[:suffix] then
-        @suffix = options[:suffix]
-        $r.hmset("node:#{@id}", :suffix, @suffix)
-      end
-
-      @child_ids, @child_names = [], []
+    if options[:id] then 
+      read_node(options[:id])
+    else
+      set_node(options[:name], options[:suffix], options[:document_id])
     end
 
     self
   end
 
+  def set_node(name, suffix, document)
+    raise NodeIncompleteError if name.nil?
+
+    @id = $r.incr(:node_total)
+
+    @name = name
+    $r.hset("node:#{@id}", :name, @name)
+
+    if suffix then
+      @suffix = suffix
+      $r.hmset("node:#{@id}", :suffix, @suffix)
+    end
+  end
+
+  def read_node(id)
+    raise NodeNotFoundError unless $r.exists("node:#{id}")
+    @id          = id
+    @name        = $r.hget("node:#{@id}", :name)
+    @suffix      = $r.hget("node:#{@id}", :suffix)
+    @child_ids   = $r.hkeys("children:#{@id}").map(&:to_i)
+    @child_names = $r.hvals("children:#{@id}")
+  end
+
   def self.load_string(str)
     m = str.match(/(\w+) (.+$)/)
-
     Node.new({ name: m ? m[1] : str, suffix: m[2] })
   end
   
@@ -115,14 +107,12 @@ class Node
   def self.first
     keys = $r.keys('node:*')
     return if keys.empty?
-
     Node.new(id: keys.first[5..-1])
   end
 
   def self.last
     keys = $r.keys('node:*')
     return if keys.empty?
-
     Node.new(id: keys.last[5..-1])
   end
 
@@ -146,10 +136,7 @@ class Node
 private
   def components(str)
     Raise NoSuffixGiven unless str
-    
     m = str.match(/(\w+) (.+$)/) 
-    ! m.nil? ? 
-    { name: m[1], suffix: m[2] } :
-    { name: str}
+    m.nil? ? {name: str} : {name: m[1], suffix: m[2]}
   end
 end
