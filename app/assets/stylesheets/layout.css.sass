@@ -1,19 +1,25 @@
-#site
-  margin: -60px 0 0 0
-  font-family: Helvetica, Foro
+html
+  font-size: 62.5%
 
+body
+  font: 1.4em/1.6em Helvetica, Arial, sans-serif
+  margin: 0
+
+#site
+  margin: 0 auto
   > header,  > footer
     background: #666 url('/assets/wood_pattern.png')
     color: #FFF
     box-shadow: inset 0 0 0.5em rgba(0, 0, 0, 0.7)  
-
+    a
+      text-decoration: none
   > header
     overflow: auto
     h1
       font: normal 2em Foro
       float: left
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8)
-      margin: 1em
+      margin: 0.5em
       &:hover
         -webkit-transform: scale(1.1)
       a
@@ -23,7 +29,6 @@
         transition: color 0.5s linear
         &:hover
           color: #111
-          text-decoration: none
     nav
       display: block
       clear: left
@@ -45,206 +50,35 @@
           -webkit-transform: scale(1.02)
           color: #FF3
           background-color: rgba(50, 50, 50, 0.2)
-
-footer
-  background: #222
-  text-align: right 
-  padding: 1em 1em 4em 1em
-  box-shadow: inset 0 0 2em #555 
-  color: #666
-
-#page
-  margin: 0.5em 0 
-  min-height: 30em
-  a#advanced
-    float: right
-  h2
-    font-size: 1.5em
-    margin: 0 0 0.5em 0
-  #searchbar
-    legend
-      display: none
-    .input
-      float: left
-  #toolbar
-    background: #333 url("/darkdenim3.png")
-    color: #FFF
-    border: 1px solid #999
-    height: 2em
-    margin-bottom: 1em
-    a
-      text-decoration: none
-      font-weight: bold
-      background: #333
-      margin: 0
-      border: 1px solid #999
-      border-width: 1px 1px 1px 0
-      padding: 0.4em 
-      color: #FFF
-      text-shadow: 0 1px 0 #000
-      display: block
-      float: left
-    a:first-child
-      border-left: 1px
-    form
-      float: left
-      fieldset
-        border: 0
-        display: inline
-        input, select
-          padding: 0.25em
-        .field
-          display: block
-          margin: 0 0 1em 0
-          label
-            font-weight: bold
-            width: 8em
-            margin: 0 1em 0 0
-            float: left
-      fieldset.options
-        float: right
-      fieldset.advanced
-        background-color: #EEE
-        color: #111
-        width: 40em
-        position: absolute
-        display: none
-        border: 0
-        right: 0
-        top: 3em
-        padding: 1em
-        box-shadow: 0 0.5em 1em #CCC
-        #status
-          background-color: #CCC
-          padding: 1em
-    button
-      padding: 0.25em
-    button.advanced
-      float: right
-  #wordtree
-    background-color: #FAFAFA
-    box-shadow: inset 0 0 1em #777
-    height: 800px
-    width: 100%
-    path.link 
-      fill: none
-      stroke: #999
-      stroke-width: 0.5px
-    .node
-      text.label
-        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5)
-        &:hover
-          cursor: hand
-          stroke: #FC0
-      text.magnitude
-        font: 0.9em sans-serif
-        fill: #333
-        text-anchor: right
-        opacity: 0
-      circle 
-        fill: #DE9
-        opacity: 0.5
-      circle:hover 
-        fill: #FC0
-        opacity: 0.8
-    .node:hover text.magnitude
-      opacity: 1
-
-nav.pagination
-  margin: 0 0 1em 0
-  background: #444
-  color: #FFF
-  overflow: auto
-  text-align: center
-  a
-    color: inherit
-    text-decoration: none
-    font-weight: bold
-  a, span
-    padding: 0.5em
-    border: 1px solid #222
-  .next, .last
-    float: right
-  .first, .prev
-    float: left
-  .current
-    background-color: #FC0
-    color: #000
-
-form
-  background-color: #DDD
-  box-shadow: inset 0 0 1em #999
-  padding: 1em
-  fieldset
-    .input
+  > footer
+    background: #222
+    text-align: right 
+    padding: 1em 1em 4em 1em
+    box-shadow: inset 0 0 2em #555 
+    color: #666
+  #page
+    padding: 1em 
+    min-height: 30em
+    > header h1
+      font-size: 1.5em
+      margin: 0 0 0.5em 0
+    nav.pagination
       margin: 0 0 1em 0
-      label
+      background: #444
+      color: #FFF
+      overflow: auto
+      text-align: center
+      a
+        color: inherit
+        text-decoration: none
         font-weight: bold
-        text-shadow: 0 1px 0 #FFF
-  &.controls
-    input
-      float: right
-
-.link
-  fill: none
-  stroke-width: 1px
-  stroke: #CCC
-
-.freq
-  opacity: 0.2
-  &:hover
-    opacity: 1
-  circle
-    fill: #FC0
-    opacity: 0.5
-  text
-    font-size: 10px
-    stroke: #111
-
-#viewport
-  border: 1px solid #666
-  width: 100% 
-  height: 2000px
-  margin: 1em
-  font-family: Arial, sans-serif
-  clear: both
-  circle.freq
-    fill: #069
-    opacity: 0.15
-    &:hover
-      opacity: 0.5
-      fill: #FC0
-  circle.marker
-    fill: #FFF
-    stroke: #222
-  path
-    z-index: 10
-
-.navbar-search
-  background: #EEE
-  border-radius: 4px
-  padding: 0.5em
-  width: 100%
-  margin: 0 0 1em 0
-  fieldset
-    float: left
-    legend
-      display: none
-    .input
-      float: left
-      margin: 0 1em 0 0
-      label
-        padding: 0.3em 0.5em 0 0
-      select
-        width: 10em
-  fieldset.controls
-    float: right
-
-form#search
-  overflow: auto
-  margin: 1em
-  fieldset
-    float: left
-    margin: 0 1em 0 0
-    label
-      font-weight: bold
+      a, span
+        padding: 0.5em
+        border: 1px solid #222
+      .next, .last
+        float: right
+      .first, .prev
+        float: left
+      .current
+        background-color: #FC0
+        color: #000

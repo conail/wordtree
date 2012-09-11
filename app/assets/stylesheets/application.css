@@ -1,6 +1,11 @@
 /*
- *= require 'bootstrap_and_overrides'
+ *= require 'reset'
  *= require 'layout'
+ *= require 'form'
+ *= require 'breadcrumb'
+ *= require 'toolbar'
+ *= require 'search'
+ *= require 'viewport'
 */
 
 @font-face { 
