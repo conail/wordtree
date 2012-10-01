@@ -1,0 +1,16 @@
+= form_tag trees_url, method: :get, id: :search do 
+  %fieldset#parameters
+    .field
+      = label_tag :q, 'Keyword'
+      = text_field_tag :q, @term, type: :search, placeholder: :keyword
+    .field
+      = label_tag :genre_id
+      = select_tag :genre_id #, options_for_select(@genres, params[:genre_id])
+    .field
+      = label_tag :discipline
+      = select_tag :discipline_id #, options_for_select(@disciplines, params[:disciplines])
+    .field
+      = label_tag :suffix, 'Show suffixes'
+      = check_box_tag :suffix
+  %fieldset.controls
+    = submit_tag 'Search'

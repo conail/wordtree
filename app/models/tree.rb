@@ -26,7 +26,6 @@ class Tree
     # The headword to exist in the root catalog.
     headword = tokens.shift
 
-
     suffix = tokens.join(' ')
   
     # Maintain the root catalog.  Every root should only exist once.
@@ -44,7 +43,6 @@ class Tree
 
     root
   end
-
 
   # Return an array of all the headwords in the root catalog.
   def self.root_words

@@ -1,16 +1,15 @@
 class TreesController < ApplicationController
   def index
-    @tree = Tree.new
-  end
+    #@genres = Genre.order(:name).uniq.map{|x| [x.name, x.id]}
+    #@disciplines = Discipline.order(:name).uniq.map{|x| [x.name, x.id]}
+    @term = params[:q]
+    @root = Tree.find_root(@term)
 
-  def create
-    @tree = Tree.new(params[:tree]) 
-    render action: :show
-  end
-
-  def show
-    @root = Tree.find_root(params[:id])
-    render 'not_found' and return if @root.nil?
-    @tree = Tree.new(@root)
+    @documents = if params[:discipline_id] then 
+      @discipline = Discipline.find(params[:discipline_id])
+      @discipline.documents
+    else
+      Document.all
+    end
   end
 end

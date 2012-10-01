@@ -14,13 +14,22 @@ linkLocation = (d) ->
   o = {x: d.source.data.x0, y: d.source.data.y0}
   diagonal({source: o, target: o})
 
+zoom = ->
+  vis.attr("transform", "translate(#{d3.event.translate})scale(#{d3.event.scale})")
+
 $(document).ready ->
   root.id = parseInt($('#tree_id').val())
   root.name = $('#tree_name').val()
   diagonal = d3.svg.diagonal().projection((d) -> [d.y, d.x])
-  vis      = d3.select('#viewport g')
+  vis      = d3.select('#viewport').
+              append('svg:svg').
+              attr("pointer-events", "all").
+              append('g').
+              attr('height', 5000).
+              call(d3.behavior.zoom().scaleExtent([1, 8]).on('zoom', zoom))
   o        = $('#viewport')
-  tree     = d3.layout.tree().size([o.height() - 20, o.width() - 200]).sort(
+  vis.append('svg:rect').attr('width', o.width()).attr('height', o.height()).attr('fill', 'white')
+  tree     = d3.layout.tree().size([o.height() - 20 + 4000, o.width() - 200]).sort(
     (a, b) -> 
       d3.descending(a.data.occurs, b.data.occurs) if a.data.level = 1
   )
@@ -75,10 +84,10 @@ window.reflow = ->
   marker = enterSelection.append('circle')
     .attr('class', 'marker')
     .attr('r', 2)
-    .on('click',  (d) -> 
-      d.data.children = []
-      window.reflow()
-    )
+    #.on('click',  (d) -> 
+    #  d.data.children = []
+    #  window.reflow()
+    #)
   
   ## Label
   label = enterSelection.append('text')
@@ -89,6 +98,7 @@ window.reflow = ->
     .attr('y', '0.3em')
     .on('click', (d) -> 
       root = {level: 0, children: [], freq: 0, name: d.data.name, id: d.data.id}
+      $($('text')[0]).text(root.name)
       data = [root]
       updateData(root)
       reflow()

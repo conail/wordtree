@@ -5,9 +5,14 @@
 # - documents -> Ordered Set [ document_id]
 
 class Node
-  attr_reader :id, :name, :suffix, :child_ids, :child_names
+  attr_reader :id, :name, :suffix, :child_ids, :child_names, :documents
 
-  def children; @child_ids.map{|x| Node.new(id: x)}; end
+  def children
+    @child_ids.map do |child| 
+      Node.new(id: child) 
+    end
+  end
+
   def occurs; $r.hlen("children:#{@id}"); end
 
   def to_json
@@ -120,7 +125,6 @@ class Node
   def delete
     collections = %w[node children documents]
     collections.each{|c| $r.del("#{c}:#{@id}")}
-    true
   end
   
   # Delete all nodes.

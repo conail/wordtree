@@ -1,24 +1,14 @@
-= simple_form_for @tree do |f|
-  %fieldset
-    %legend Search
-    .field
-      = label_tag :term
-      = text_field_tag :term
-    = link_to 'Advanced Search', '', id: :advanced
-  %fieldset#advanced
-    %legend
-    .field
-      = label_tag :genre
-      = select_tag :genre, options_for_select(Genre.order(:name))
-    .field
-      = label_tag :level
-      = text_field_tag :foo
-    .field
-      = label_tag :discipline
-      = text_field_tag :foo
-  %fieldset.controls 
-    = submit_tag 'Go'
-    %input{type: :reset, value: 'Clear'}
+- title 'Wordtree'
 
+= render partial: 'form'
 
+- if @term 
+  #sidebar
+    %h1= "Documents returned: #{@documents.count}"
+  .current_tree
+    = hidden_field_tag :tree_id, @root.id
+    = hidden_field_tag :tree_name, @term
+  #viewport
+- else
+  = render partial: 'not_found'
 
