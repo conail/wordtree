@@ -14,8 +14,7 @@ namespace :admin do
   desc 'Delete everything from persistent storage.'
   task drop: :environment do 
     puts 'Stage 0: Deleting old objects.'
-    Document.delete_all
-    Sentence.delete_all
+    [Document, Sentence, Genre, Discipline].each(&:delete_all)
     $r.flushall
   end
 
@@ -24,8 +23,8 @@ namespace :admin do
     puts 'Stage 1: Reading CSV headers.  Takes up to a minute.'
     a = %w[student_id code title level date module genre discipline dgroup grade words sunits punits tables figures block quotes formulae lists listlikes abstract ws sp macrotype gender dob l1 education course texts complex xml]
     CSV.foreach(METADATA, headers: :first_row) do |r|
-      r[6]  = Genre.create(name: r[6])
-      r[7]  = Discipline.create(name: r[7])
+      r[6]  = Genre.find_or_create_by_name(r[6])
+      r[7]  = Discipline.find_or_create_by_name(r[7])
       r[31] = IO.read("#{DATASRC}/#{r[1]}.xml")
       Document.create(Hash[a.each_with_index.map{|a,i|[a,r[i]]}])
     end

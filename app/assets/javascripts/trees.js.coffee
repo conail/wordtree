@@ -15,7 +15,26 @@ linkLocation = (d) ->
   diagonal({source: o, target: o})
 
 zoom = ->
+  inverse = 1/d3.event.scale
+  window.scale = inverse
   vis.attr("transform", "translate(#{d3.event.translate})scale(#{d3.event.scale})")
+  vis.selectAll('text').attr("transform", "scale(#{inverse})")
+  vis.selectAll('circle').attr("transform", "scale(#{inverse})")
+  vis.selectAll('path.link').attr("stroke-width", "#{inverse}")
+  sizeTree()
+  reflow()
+
+sorter = (a, b) ->
+  d3.descending(a.data.occurs, b.data.occurs) if a.data.level = 1
+
+sizeTree = () ->
+  o = $("#viewport")
+  scaling_factor = window.scale || 1
+  scaling_factor = Math.max(scaling_factor, 0.3)
+  height = o.height() - 20
+  width = o.width() * scaling_factor - 200
+  
+  window.tree = d3.layout.tree().size([height, width]).sort(sorter)
 
 $(document).ready ->
   root.id = parseInt($('#tree_id').val())
@@ -25,18 +44,15 @@ $(document).ready ->
               append('svg:svg').
               attr("pointer-events", "all").
               append('g').
-              attr('height', 5000).
-              call(d3.behavior.zoom().scaleExtent([1, 8]).on('zoom', zoom))
+              call(d3.behavior.zoom().scaleExtent([1, 8]).on('zoom', zoom)).
+              append('g')
   o        = $('#viewport')
-  vis.append('svg:rect').attr('width', o.width()).attr('height', o.height()).attr('fill', 'white')
-  tree     = d3.layout.tree().size([o.height() - 20 + 4000, o.width() - 200]).sort(
-    (a, b) -> 
-      d3.descending(a.data.occurs, b.data.occurs) if a.data.level = 1
-  )
+  vis.append('svg:rect').attr('width', o.width()).attr('height', o.height()).attr('fill', 'none')
+  sizeTree()
 
   # Root node
   node = vis.selectAll('g.node')
-    .data(tree(root))
+    .data(window.tree(root))
     .enter()
     .append('g')
     .attr('class', 'node')
@@ -58,7 +74,7 @@ $(document).ready ->
 
 window.reflow = ->
   # Recompute tree layout.
-  nodes = tree(root)
+  nodes = window.tree(root)
   
   # NODES
   # ---------------------------------------------------------------------------
@@ -84,10 +100,6 @@ window.reflow = ->
   marker = enterSelection.append('circle')
     .attr('class', 'marker')
     .attr('r', 2)
-    #.on('click',  (d) -> 
-    #  d.data.children = []
-    #  window.reflow()
-    #)
   
   ## Label
   label = enterSelection.append('text')
@@ -128,7 +140,7 @@ window.reflow = ->
   # LINKS
   # ---------------------------------------------------------------------------
   link = vis.selectAll('path.link')
-    .data(tree.links(nodes))
+    .data(window.tree.links(nodes))
 
   # New Links
   link.enter()
