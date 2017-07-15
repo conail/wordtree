@@ -5,3 +5,8 @@ Incompatible with ruby 2.4, Active Record throws error as Arel::Visitors::SQLite
 ## Getting Started
 
 Use the rake command admin:reset to ingest and process corpus.
+
+## Dependencies
+
+- SQLite
+- Redis
