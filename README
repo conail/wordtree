@@ -1,1 +1,7 @@
-Wordtree -- An Interactive Visual Corpus Interface.
+# Wordtree -- An Interactive Visual Corpus Interface.
+
+Incompatible with ruby 2.4, Active Record throws error as Arel::Visitors::SQLite has been deprecated.
+
+## Getting Started
+
+Use the rake command admin:reset to ingest and process corpus.
