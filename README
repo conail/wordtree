@@ -10,3 +10,13 @@ Use the rake command admin:reset to ingest and process corpus.
 
 - SQLite
 - Redis
+
+## Data Structure
+
+- Words (symbols)
+- Documents > Sentences > Word Intances in a linear ordering (coordinates).
+- Directed, cyclic graph of sentence/word orderings 
+
+words = nodes
+each edge has it's own identity
+pseudograph: cycles, loops
